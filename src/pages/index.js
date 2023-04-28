@@ -1,3 +1,4 @@
+import Hero from "@/components/Slider/Hero";
 import { Box } from "@chakra-ui/react";
 import Head from "next/head";
 
@@ -10,7 +11,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box>Home</Box>
+      <Box h={700}>
+        <Hero />
+      </Box>
     </>
   );
 }
