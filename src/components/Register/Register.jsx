@@ -209,7 +209,7 @@ const RegisterForm = () => {
                         </Box>
                     )}
 
-                    <Text p={2} mb="6" textAlign="center" color="gray.500" fontSize="sm">
+                    <Text p={2} mb="6" textAlign="center" color="gray.500" fontSize="xs">
                         By creating an account, you agree to Nike's Privacy Policy and Terms of Use.
                     </Text>
                     <Button
@@ -223,7 +223,7 @@ const RegisterForm = () => {
                     >
                         JOIN US
                     </Button>
-                    <Text mb="6" textAlign="center" color="gray.500" fontSize="sm">
+                    <Text mb="6" textAlign="center" color="gray.500" fontSize="xs">
                         Already a Member? {' '}
                         <Link href="/login">
                             Sign In

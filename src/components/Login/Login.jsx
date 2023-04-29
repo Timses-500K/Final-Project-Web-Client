@@ -98,16 +98,16 @@ const LoginForm = () => {
                         <Stack direction="row" justifyContent="space-between">
                             <Box>
                                 <Checkbox value={keepSignedIn} onChange={handleKeepSignedInChange}>
-                                    <Text fontSize="sm">Keep me signed in</Text>
+                                    <Text fontSize="xs">Keep me signed in</Text>
                                 </Checkbox>
                             </Box>
                             <Box>
-                                <Text fontSize="sm">
+                                <Text fontSize="xs">
                                     <a href="#">Forgotten your password?</a>
                                 </Text>
                             </Box>
                         </Stack>
-                        <Text p={2} mb="6" textAlign="center" color="gray.500" fontSize="sm">
+                        <Text p={2} mb="6" textAlign="center" color="gray.500" fontSize="xs">
                             By logging in, you agree to Nike's Privacy Policy and Terms of Use.
                         </Text>
                     </CheckboxGroup>
@@ -122,7 +122,7 @@ const LoginForm = () => {
                     >
                         SIGN IN
                     </Button>
-                    <Text mb="6" textAlign="center" color="gray.500" fontSize="sm">
+                    <Text mb="6" textAlign="center" color="gray.500" fontSize="xs">
                         Not a Member?{' '}
                         <Link href="/register">
                             Join Us
