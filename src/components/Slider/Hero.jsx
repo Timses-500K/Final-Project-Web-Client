@@ -11,8 +11,9 @@ const Hero = () => {
       color="white"
       fontSize={20}
       w="full"
-      maxW={1300}
+      maxW={1800}
       mx="auto"
+      px={{ base: "10px", md: "15px" }}
     >
       <Carousel
         autoPlay={true}
