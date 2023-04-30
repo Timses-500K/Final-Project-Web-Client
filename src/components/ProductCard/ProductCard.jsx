@@ -26,14 +26,20 @@ const ProductCard = () => {
           <Heading as="h2" size="lg">
             Nike Runner
           </Heading>
-          <Flex alignItems="center" color="blackAlpha.500">
-            <Text mr={2} fontSize="lg" fontWeight="semibold">
+          <Flex alignItems="center">
+            <Text
+              mr={2}
+              fontSize="lg"
+              fontWeight="semibold"
+              color="blackAlpha.700"
+            >
               Rp. 250000
             </Text>
             <Text
               fontSize="md"
               fontWeight="medium"
               textDecoration="line-through"
+              color="blackAlpha.500"
             >
               Rp. 350000
             </Text>
