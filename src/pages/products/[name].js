@@ -1,5 +1,6 @@
 import Wrapper from "@/components/Footer/Wrapper";
 import ProductDetailsGallery from "@/components/Slider/ProductDetailsGallery";
+import RelatedProducts from "@/components/Slider/RelatedProducts";
 import {
   Box,
   Button,
@@ -229,6 +230,7 @@ const ProductDetails = () => {
             </Box>
           </Box>
         </Flex>
+        <RelatedProducts />
       </Wrapper>
     </Box>
   );
