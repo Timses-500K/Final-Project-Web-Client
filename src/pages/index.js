@@ -1,4 +1,7 @@
-import { Box } from "@chakra-ui/react";
+import Wrapper from "@/components/Navbar/Wrapper";
+import ProductCard from "@/components/ProductCard/ProductCard";
+import Hero from "@/components/Slider/Hero";
+import { Box, Button, Grid, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import Head from "next/head";
 
 export default function Home() {
@@ -10,7 +13,63 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Box>Home</Box>
+      <Box>
+        <Hero />
+        <Wrapper>
+          <Box
+            textAlign={{ base: "left", md: "center" }}
+            maxW={800}
+            mx="auto"
+            my={{ base: "50px", md: "80px" }}
+          >
+            <Text>Nike Pegasus 40</Text>
+            <Heading
+              as="h1"
+              fontSize={{ base: "5xl", md: "7xl" }}
+              fontWeight="extrabold"
+              textTransform="uppercase"
+              letterSpacing={{ base: -4, md: -6 }}
+              mt={-2}
+            >
+              The World Runs
+            </Heading>
+            <Heading
+              as="h1"
+              fontSize={{ base: "5xl", md: "7xl" }}
+              fontWeight="extrabold"
+              textTransform="uppercase"
+              letterSpacing={{ base: -4, md: -6 }}
+              mt={-6}
+            >
+              In Pegasus.
+            </Heading>
+            <Text py={6}>
+              Meet the latest update to the shoe that's been trusted by runners
+              of all kinds for four decades.
+            </Text>
+            <Button
+              color="white"
+              bg="black"
+              colorScheme="blackAlpha"
+              rounded={50}
+              size="md"
+              fontWeight="normal"
+            >
+              Shop
+            </Button>
+          </Box>
+          <SimpleGrid minChildWidth={400} gap={5} my={14}>
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+          </SimpleGrid>
+        </Wrapper>
+      </Box>
     </>
   );
 }
