@@ -11,10 +11,10 @@ const mainMenu = [
 ];
 
 const subMenu = [
-  { id: 1, name: "Jordan", doc_count: 11, url: "/" },
-  { id: 2, name: "Sneakers", doc_count: 8, url: "/" },
-  { id: 3, name: "Running", doc_count: 40, url: "/" },
-  { id: 4, name: "Football", doc_count: 90, url: "/" },
+  { id: 1, name: "Jordan", doc_count: 11, url: "/products/jordan" },
+  { id: 2, name: "Sneakers", doc_count: 8, url: "/products/sneakers" },
+  { id: 3, name: "Running", doc_count: 40, url: "/products/running" },
+  { id: 4, name: "Football", doc_count: 90, url: "/products/football" },
 ];
 
 const MobileMenu = ({ showSubMenu, setShowSubMenu, setMobileMenu }) => {
