@@ -1,8 +1,19 @@
-import { Box, Flex, Hide, Select, Show, Text } from "@chakra-ui/react";
+import { Box, Flex, Hide, Select, Text } from "@chakra-ui/react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import Image from "next/image";
+import { useContext } from "react";
+import { Store } from "@/helper/store";
+import Link from "next/link";
 
-const CartItem = () => {
+const CartItem = ({ data: item }) => {
+  const { dispatch } = useContext(Store);
+  // const updateCartHandler = (item, q) => {
+  //   const qty = parseInt(q);
+  //   dispatch({
+  //     type: "ADD_ITEM",
+  //     payload: { ...item, qty },
+  //   });
+  // };
   return (
     <Flex
       py={5}
@@ -18,13 +29,15 @@ const CartItem = () => {
           flexDirection={{ base: "column", md: "row" }}
           justify="space-between"
         >
-          <Text
-            fontSize={{ base: "lg", md: "2xl" }}
-            fontWeight="semibold"
-            color="blackAlpha.800"
-          >
-            Jordan Aero Dynamic
-          </Text>
+          <Link href={`/products/${item.id}`}>
+            <Text
+              fontSize={{ base: "lg", md: "2xl" }}
+              fontWeight="semibold"
+              color="blackAlpha.800"
+            >
+              Jordan Aero Dynamic
+            </Text>
+          </Link>
           <Hide breakpoint="(min-width: 768px)">
             <Text
               fontSize={{ base: "sm", md: "md" }}
@@ -63,21 +76,52 @@ const CartItem = () => {
           >
             <Flex alignItems="center" gap={1}>
               <Text fontWeight="semibold">Size:</Text>
-              <Select _hover={{ color: "black" }} cursor="pointer">
-                <option>38</option>
-                <option>39</option>
-                <option>40</option>
-                <option>41</option>
-                <option>42</option>
+              <Select
+                _hover={{ color: "black" }}
+                cursor="pointer"
+                onChange={(e) => {
+                  let selectedSize = e.target.value;
+                  dispatch({
+                    type: "ADD_ITEM",
+                    payload: { ...item, selectedSize },
+                  });
+                }}
+              >
+                {" "}
+                {item.sizes.map((size, i) => {
+                  return (
+                    <option
+                      key={i}
+                      value={size.size}
+                      selected={item.selectedSize === size.size}
+                    >
+                      {size.size}
+                    </option>
+                  );
+                })}
               </Select>
             </Flex>
             <Flex alignItems="center" gap={1}>
               <Text fontWeight="semibold">Quantity:</Text>
-              <Select _hover={{ color: "black" }} cursor="pointer">
-                {Array.from({ length: 10 }, (_, i) => i + 1).map((q, i) => {
+              <Select
+                _hover={{ color: "black" }}
+                cursor="pointer"
+                onChange={(e) => {
+                  let q = parseInt(e.target.value);
+                  dispatch({
+                    type: "ADD_ITEM",
+                    payload: { ...item, quantity: q },
+                  });
+                }}
+              >
+                {Array.from({ length: 10 }, (_, i) => i + 1).map((qty, i) => {
                   return (
-                    <option key={i} value={q}>
-                      {q}
+                    <option
+                      key={i}
+                      value={qty}
+                      selected={item.quantity === qty}
+                    >
+                      {qty}
                     </option>
                   );
                 })}
@@ -89,6 +133,12 @@ const CartItem = () => {
             color="blackAlpha.500"
             _hover={{ color: "black" }}
             fontSize={20}
+            onClick={() => {
+              dispatch({
+                type: "DELETE_ITEM",
+                payload: item,
+              });
+            }}
           >
             <RiDeleteBin6Line />
           </Box>
