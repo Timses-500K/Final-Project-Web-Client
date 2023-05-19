@@ -1,9 +1,11 @@
 import { Box, Center, Flex, Hide, Show } from "@chakra-ui/react";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import { BsCart, BsChevronDown, BsHeart } from "react-icons/bs";
 import { BiMenuAltRight } from "react-icons/bi";
 import { VscChromeClose } from "react-icons/vsc";
+// import { useSelector } from "react-redux";
+import { Store } from "@/helper/store";
 
 const mainMenu = [
   { id: 1, name: "Home", url: "/" },
@@ -13,10 +15,10 @@ const mainMenu = [
 ];
 
 const subMenu = [
-  { id: 1, name: "Jordan", doc_count: 11, url: "/products/jordan" },
-  { id: 2, name: "Sneakers", doc_count: 8, url: "/products/sneakers" },
-  { id: 3, name: "Running", doc_count: 40, url: "/products/running" },
-  { id: 4, name: "Football", doc_count: 90, url: "/products/football" },
+  { id: 1, name: "Jordan", doc_count: 11, url: "/category/4" },
+  { id: 2, name: "Sneakers", doc_count: 8, url: "/category/1" },
+  { id: 3, name: "Running", doc_count: 40, url: "/category/2" },
+  { id: 4, name: "Football", doc_count: 90, url: "/category/3" },
 ];
 
 const MainMenu = ({
@@ -25,6 +27,9 @@ const MainMenu = ({
   mobileMenu,
   setMobileMenu,
 }) => {
+  // const { cartItems } = useSelector((state) => state.cart);
+  const { state } = useContext(Store);
+  const { cart } = state;
   return (
     <>
       <Box
@@ -135,7 +140,7 @@ const MainMenu = ({
             <Center>19</Center>
           </Box>
         </Center>
-        <Link href={"/cart"}>
+        <Link href="/cart">
           <Center
             w={{ base: 8, md: 12 }}
             h={{ base: 8, md: 12 }}
@@ -146,20 +151,27 @@ const MainMenu = ({
             _hover={{ bg: "gray.100" }}
           >
             <BsCart />
-            <Box
-              h={{ base: "14px", md: "18px" }}
-              w={{ base: "14px", md: "18px" }}
-              rounded="full"
-              bg="red.600"
-              position="absolute"
-              top={1}
-              left={{ base: 5, md: 7 }}
-              color="white"
-              fontSize={{ base: "10px", md: "12px" }}
-              px={{ base: "2px", md: "5px" }}
-            >
-              <Center>29</Center>
-            </Box>
+            {cart.cartItems.length > 0 && (
+              <Box
+                h={{ base: "14px", md: "18px" }}
+                w={{ base: "14px", md: "18px" }}
+                rounded="full"
+                bg="red.600"
+                position="absolute"
+                top={1}
+                left={{ base: 5, md: 7 }}
+                color="white"
+                fontSize={{ base: "10px", md: "12px" }}
+                px={{ base: "2px", md: "5px" }}
+              >
+                <Center>
+                  {cart.cartItems.reduce(
+                    (accumulator, current) => accumulator + current.quantity,
+                    0
+                  )}
+                </Center>
+              </Box>
+            )}
           </Center>
         </Link>
         <Hide breakpoint="(min-width: 768px)">
