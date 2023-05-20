@@ -1,6 +1,6 @@
 import { Box, Center, Flex, Hide, Show } from "@chakra-ui/react";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { BsCart, BsChevronDown, BsHeart } from "react-icons/bs";
 import { BiMenuAltRight } from "react-icons/bi";
 import { VscChromeClose } from "react-icons/vsc";
@@ -28,8 +28,9 @@ const MainMenu = ({
   setMobileMenu,
 }) => {
   // const { cartItems } = useSelector((state) => state.cart);
-  const { state } = useContext(Store);
-  const { cart } = state;
+  const { dispatch, state } = useContext(Store);
+  const { cart, nav } = state;
+
   return (
     <>
       <Box
@@ -72,9 +73,12 @@ const MainMenu = ({
                         color="black"
                         shadow="lg"
                       >
-                        {subMenu.map((submenu) => {
+                        {nav.categories.map((category) => {
                           return (
-                            <Link key={submenu.id} href={submenu.url}>
+                            <Link
+                              key={category.id}
+                              href={`/category/${category.name}`}
+                            >
                               <Flex
                                 h={12}
                                 alignItems="center"
@@ -83,9 +87,9 @@ const MainMenu = ({
                                 _hover={{ bg: "blackAlpha.50" }}
                                 cursor="pointer"
                               >
-                                {submenu.name}
+                                {category.name}
                                 <Box fontSize="sm" color="gray.400">
-                                  {submenu.doc_count}
+                                  {category.products.length}
                                 </Box>
                               </Flex>
                             </Link>
