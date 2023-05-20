@@ -1,9 +1,18 @@
 import { createContext, useReducer } from "react";
+import { fetchDataFromAPI } from "./api";
 
 export const Store = createContext();
 
+const getCategory = async () => {
+  const res = await fetchDataFromAPI("/categories");
+  return res;
+};
+
+const categories = await getCategory();
+
 const initialState = {
   cart: { cartItems: [] },
+  nav: { categories: categories },
 };
 
 function reducer(state, action) {
@@ -32,6 +41,9 @@ function reducer(state, action) {
       );
       console.log("cartItems: ", state.cart.cartItems);
       return { ...state, cart: { ...state.cart, cartItems } };
+    }
+    case "LOAD_CATEGORIES": {
+      return { ...state, nav: { categories: action.payload } };
     }
     default:
       return state;
