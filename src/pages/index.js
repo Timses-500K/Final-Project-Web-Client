@@ -71,7 +71,7 @@ export default function Home({ products }) {
 }
 
 export async function getStaticProps() {
-  const products = await fetchDataFromAPI("/products");
+  const products = await fetchDataFromAPI("/product");
   return {
     props: {
       products,

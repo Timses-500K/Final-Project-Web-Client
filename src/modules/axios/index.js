@@ -1,11 +1,11 @@
-const { default: axios } = require("axios")
+const { default: axios } = require("axios");
 
-const baseURL = 'http://localhost:3001'
+const baseURL = "http://localhost:3001/api";
 const instance = axios.create({
-  baseURL: 'http://localhost:3001', 
+  baseURL,
   headers: {
-    "Content-type": "application/json"
-  }
-})
+    "Content-type": "application/json",
+  },
+});
 
-export {instance}
+export { instance };

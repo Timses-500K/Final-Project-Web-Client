@@ -84,25 +84,29 @@ const Navbar = () => {
               <Box fontSize={12} color="blackAlpha.800">
                 |
               </Box>
-              <Box
-                fontSize={12}
-                color="blackAlpha.800"
-                _hover={{ color: "gray.500" }}
-                cursor="pointer"
-              >
-                Join Us
-              </Box>
+              <Link href="/register">
+                <Box
+                  fontSize={12}
+                  color="blackAlpha.800"
+                  _hover={{ color: "gray.500" }}
+                  cursor="pointer"
+                >
+                  Join Us
+                </Box>
+              </Link>
               <Box fontSize={12} color="blackAlpha.800">
                 |
               </Box>
-              <Box
-                fontSize={12}
-                color="blackAlpha.800"
-                _hover={{ color: "gray.500" }}
-                cursor="pointer"
-              >
-                Sign In
-              </Box>
+              <Link href="/login">
+                <Box
+                  fontSize={12}
+                  color="blackAlpha.800"
+                  _hover={{ color: "gray.500" }}
+                  cursor="pointer"
+                >
+                  Sign In
+                </Box>
+              </Link>
             </Flex>
           </Flex>
         </Box>

@@ -42,10 +42,10 @@ const ProductDetails = ({ product, products }) => {
           </Flex>
           <Box flex={1}>
             <Text fontSize={34} fontWeight="semibold">
-              {product.name}
+              {product.itemName}
             </Text>
             <Text fontSize="lg" mb={5}>
-              {product.name}
+              {product.itemName}
             </Text>
             <Text fontSize="lg" fontWeight="semibold">
               Rp. {product.price}
@@ -76,7 +76,7 @@ const ProductDetails = ({ product, products }) => {
                 </Text>
               </Flex>
               <SimpleGrid columns={3} spacing={5} id="simpleSizeGrid" pb={5}>
-                {product?.sizes?.map((size, i) => (
+                {product?.itemSize?.map((size, i) => (
                   <Box
                     key={i}
                     border="1px"
@@ -127,7 +127,7 @@ const ProductDetails = ({ product, products }) => {
                         item.selectedSize === selectedSize
                     );
                     const quantity = existItem ? existItem.quantity + 1 : 1;
-                    if (product.sizes.stock < quantity) {
+                    if (product.stock < quantity) {
                       toast({
                         title: "Sorry, we are out of stock",
                         status: "error",
@@ -203,7 +203,7 @@ const ProductDetails = ({ product, products }) => {
 export default ProductDetails;
 
 export async function getStaticPaths() {
-  const products = await fetchDataFromAPI("/products");
+  const products = await fetchDataFromAPI("/product");
   const paths = products.map((p) => ({
     params: {
       id: `${p.id}`,
@@ -216,8 +216,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const product = await fetchDataFromAPI(`/products/${params.id}`);
-  const products = await fetchDataFromAPI("/products");
+  const product = await fetchDataFromAPI(`/productDetail/${params.id}`);
+  const products = await fetchDataFromAPI("/product");
   // const sizes = await fetchDataFromAPI(`/product/${params.id}/sizes`);
   return {
     props: {

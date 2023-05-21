@@ -30,7 +30,7 @@ const Category = ({ products }) => {
 export default Category;
 
 export async function getStaticPaths() {
-  const categories = await fetchDataFromAPI("/categories");
+  const categories = await fetchDataFromAPI("/dashboard/category");
   const paths = categories.map((c) => ({
     params: {
       id: `${c.id}`,
@@ -43,7 +43,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const products = await fetchDataFromAPI(`/products/category/${params.id}`);
+  const products = await fetchDataFromAPI(`/dashboard/category/${params.id}`);
   return {
     props: {
       products,

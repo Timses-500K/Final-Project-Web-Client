@@ -35,7 +35,7 @@ const CartItem = ({ data: item }) => {
               fontWeight="semibold"
               color="blackAlpha.800"
             >
-              Jordan Aero Dynamic
+              {item.itemName}
             </Text>
           </Link>
           <Hide breakpoint="(min-width: 768px)">
@@ -54,7 +54,7 @@ const CartItem = ({ data: item }) => {
             color="blackAlpha.500"
             mt={2}
           >
-            Rp. 250,000
+            Rp. {item.price - item.price * 0.2}
           </Text>
         </Flex>
         <Hide breakpoint="(max-width: 768px)">
@@ -88,7 +88,7 @@ const CartItem = ({ data: item }) => {
                 }}
               >
                 {" "}
-                {item.sizes.map((size, i) => {
+                {item.itemSize.map((size, i) => {
                   return (
                     <option
                       key={i}

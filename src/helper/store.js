@@ -4,7 +4,7 @@ import { fetchDataFromAPI } from "./api";
 export const Store = createContext();
 
 const getCategory = async () => {
-  const res = await fetchDataFromAPI("/categories");
+  const res = await fetchDataFromAPI("/dashboard/category");
   return res;
 };
 

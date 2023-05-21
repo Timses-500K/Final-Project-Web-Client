@@ -77,7 +77,7 @@ const MainMenu = ({
                           return (
                             <Link
                               key={category.id}
-                              href={`/category/${category.name}`}
+                              href={`/category/${category.categoryName}`}
                             >
                               <Flex
                                 h={12}
@@ -87,9 +87,9 @@ const MainMenu = ({
                                 _hover={{ bg: "blackAlpha.50" }}
                                 cursor="pointer"
                               >
-                                {category.name}
+                                {category.categoryName}
                                 <Box fontSize="sm" color="gray.400">
-                                  {category.products.length}
+                                  {category.categoryItem.length}
                                 </Box>
                               </Flex>
                             </Link>
