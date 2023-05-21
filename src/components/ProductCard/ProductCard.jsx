@@ -31,7 +31,7 @@ const ProductCard = ({ data: product }) => {
         /> */}
         <Box p={4} color="blackAlpha.900">
           <Heading as="h2" size="md">
-            {product.name}
+            {product.itemName}
           </Heading>
           <Flex alignItems="center">
             <Text

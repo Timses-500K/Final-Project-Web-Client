@@ -6,15 +6,18 @@ import Footer from "@/components/Footer/Footer";
 // import { Provider } from "react-redux";
 // import store from "@/store/store";
 import { StoreProvider } from "@/helper/store";
+import { AuthProvider } from "@/helper/auth";
 
 export default function App({ Component, pageProps }) {
   return (
-    <StoreProvider>
-      <ChakraProvider>
-        <Navbar />
-        <Component {...pageProps} />
-        <Footer />
-      </ChakraProvider>
-    </StoreProvider>
+    <AuthProvider>
+      <StoreProvider>
+        <ChakraProvider>
+          <Navbar />
+          <Component {...pageProps} />
+          <Footer />
+        </ChakraProvider>
+      </StoreProvider>
+    </AuthProvider>
   );
 }

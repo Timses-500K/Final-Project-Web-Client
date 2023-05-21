@@ -1,6 +1,7 @@
 import CartItem from "@/components/Cart/CartItem";
 import Wrapper from "@/components/Footer/Wrapper";
 import { Store } from "@/helper/store";
+import { useRouter } from "next/router";
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
@@ -9,6 +10,7 @@ import React, { useContext } from "react";
 
 const Cart = () => {
   // const { cartItems } = useSelector((state) => state.cart);
+  const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const {
     cart: { cartItems },
@@ -72,7 +74,10 @@ const Cart = () => {
                       color="black"
                     >
                       Rp.{" "}
-                      {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                      {cartItems.reduce(
+                        (a, c) => a + c.quantity * (c.price - c.price * 0.2),
+                        0
+                      )}
                     </Text>
                   </Flex>
                   <Flex justify="space-between" py={2}>
@@ -84,7 +89,11 @@ const Cart = () => {
                       fontWeight="medium"
                       color="black"
                     >
-                      Rp. 500,000
+                      Rp.{" "}
+                      {cartItems.reduce(
+                        (a, c) => a + c.quantity * (c.price - c.price * 0.2),
+                        0
+                      ) * 0.01}
                     </Text>
                   </Flex>
                   <Flex
@@ -102,7 +111,7 @@ const Cart = () => {
                       fontWeight="medium"
                       color="black"
                     >
-                      Rp. 500,000,000
+                      Free
                     </Text>
                   </Flex>
                   <Box fontSize={{ base: "sm", md: "md" }} py={5} borderTop={1}>
@@ -126,7 +135,17 @@ const Cart = () => {
                         fontWeight="medium"
                         color="black"
                       >
-                        Rp. 500,000,000
+                        Rp.{" "}
+                        {cartItems.reduce(
+                          (a, c) => a + c.quantity * (c.price - c.price * 0.2),
+                          0
+                        ) +
+                          cartItems.reduce(
+                            (a, c) =>
+                              a + c.quantity * (c.price - c.price * 0.2),
+                            0
+                          ) *
+                            0.01}
                       </Text>
                     </Flex>
                   </Box>
@@ -268,7 +287,7 @@ const Cart = () => {
                     transition="transform .3s ease-out"
                     _active={{ transform: "scale(0.95)" }}
                     mb={3}
-                    isDisabled={true}
+                    onClick={() => router.push("login?redirect=/shipping")}
                   >
                     Checkout
                   </Button>
