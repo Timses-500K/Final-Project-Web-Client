@@ -23,7 +23,7 @@ const RelatedProducts = ({ products }) => {
   };
 
   return (
-    <Box mt={{ base: 50, md: 100 }} mb={{ base: 100, md: 0 }}>
+    <Box mt={{ base: 50, md: 100 }} mb={{ base: 100, md: 5 }}>
       <Text fontSize="2xl" fontWeight="bold" mb={5}>
         You Might Also Like
       </Text>

@@ -1,6 +1,6 @@
 import { Box, Center, Flex, Hide, Show } from "@chakra-ui/react";
 import Link from "next/link";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { BsCart, BsChevronDown, BsHeart } from "react-icons/bs";
 import { BiMenuAltRight } from "react-icons/bi";
 import { VscChromeClose } from "react-icons/vsc";
@@ -9,16 +9,9 @@ import { Store } from "@/helper/store";
 
 const mainMenu = [
   { id: 1, name: "Home", url: "/" },
-  { id: 2, name: "About", url: "/about" },
+  { id: 2, name: "Products", url: "/products" },
   { id: 3, name: "Categories", subMenuStatus: true },
-  { id: 4, name: "Contact", url: "/contact" },
-];
-
-const subMenu = [
-  { id: 1, name: "Jordan", doc_count: 11, url: "/category/4" },
-  { id: 2, name: "Sneakers", doc_count: 8, url: "/category/1" },
-  { id: 3, name: "Running", doc_count: 40, url: "/category/2" },
-  { id: 4, name: "Football", doc_count: 90, url: "/category/3" },
+  { id: 4, name: "Contact Us", url: "/contact" },
 ];
 
 const MainMenu = ({
@@ -73,7 +66,7 @@ const MainMenu = ({
                         color="black"
                         shadow="lg"
                       >
-                        {nav.categories.map((category) => {
+                        {nav?.categories?.map((category) => {
                           return (
                             <Link
                               key={category.id}
