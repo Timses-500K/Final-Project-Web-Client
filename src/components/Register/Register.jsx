@@ -57,6 +57,24 @@ const RegisterForm = () => {
         setBirthdate(event.target.value)
     }
 
+    const postData = (url, data) => {
+        return fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(responseData => {
+                // Respon yang diterima dari API setelah mengirim data
+                return responseData;
+            })
+            .catch(error => {
+                // Tangani kesalahan
+                console.log(error);
+            });
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault()
@@ -90,6 +108,23 @@ const RegisterForm = () => {
             birthdate
         });
 
+        let payload = {
+            firstName,
+            lastName,
+            email,
+            password,
+            confirmPassword,
+            birthdate
+        }
+        postData("http://localhost:3001/register", payload)
+
+        // {
+        //     "name": "string",
+        //     "email": "string",
+        //     "address": "string",
+        //     "password": "string"
+        //   }
+        
         // Clear form fields
         // setFirstName('')
         // setLastName('')
