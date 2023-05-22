@@ -7,13 +7,7 @@ import Link from "next/link";
 
 const CartItem = ({ data: item }) => {
   const { dispatch } = useContext(Store);
-  // const updateCartHandler = (item, q) => {
-  //   const qty = parseInt(q);
-  //   dispatch({
-  //     type: "ADD_ITEM",
-  //     payload: { ...item, qty },
-  //   });
-  // };
+
   return (
     <Flex
       py={5}

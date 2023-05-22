@@ -3,7 +3,7 @@ import ProductCard from "@/components/ProductCard/ProductCard";
 import Hero from "@/components/Slider/Hero";
 import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import Head from "next/head";
-import { fetchDataFromAPI } from "../helper/api";
+import { fetchDataFromAPI } from "../modules/fetch";
 
 export default function Home({ products }) {
   return (

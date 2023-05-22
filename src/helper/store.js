@@ -1,5 +1,5 @@
+import { fetchDataFromAPI } from "@/modules/fetch";
 import { createContext, useReducer } from "react";
-import { fetchDataFromAPI } from "./api";
 
 export const Store = createContext();
 
