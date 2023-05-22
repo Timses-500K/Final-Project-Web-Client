@@ -12,14 +12,14 @@ const Category = ({ products }) => {
             fontSize={{ base: 28, md: 34 }}
             mb={5}
             fontWeight="semibold"
-            lineHeight={1.25}
+            lineHeight={1.5}
           >
             {products.categoryName}
           </Text>
         </Center>
-        <SimpleGrid minChildWidth={400} gap={5} my={14}>
-          {products?.CategoryItems?.Item?.map((product) => (
-            <ProductCard key={product.id} data={product} />
+        <SimpleGrid minChildWidth={250} gap={5} my={14}>
+          {products?.CategoryItems?.map((product) => (
+            <ProductCard key={product?.Item.id} data={product.Item} />
           ))}
         </SimpleGrid>
       </Wrapper>

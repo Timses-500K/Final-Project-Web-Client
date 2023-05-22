@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Box,
@@ -14,61 +14,69 @@ import {
   Checkbox,
   CheckboxGroup,
   Image,
+  useToast,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { signIn, useSession } from "next-auth/react";
+import { getError } from "@/helper/error";
+import { useRouter } from "next/router";
+import { VscEye, VscEyeClosed } from "react-icons/vsc";
 
 const LoginForm = () => {
+  const router = useRouter();
+  const { redirect } = router.query;
+  const toast = useToast;
+  const [show, setShow] = useState(false);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session?.user) {
+      router.push(redirect || "/");
+    }
+  }, [router, session, redirect]);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm();
-  const submitHandler = ({ email, password }) => console.log(email, password);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const submitHandler = async ({ email, password }) => {
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+      if (res.error) {
+        toast({
+          title: res.error,
+          status: "error",
+          position: "top",
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: getError(error),
+        status: "error",
+        position: "top",
+        isClosable: true,
+      });
+    }
+  };
   const [keepSignedIn, setKeepSignedIn] = useState(false);
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
 
   const handleKeepSignedInChange = (values) => {
     setKeepSignedIn(!values);
   };
 
-  // const handleSubmit = (event) => {
-  //     event.preventDefault()
-  //     // Handle submit logic here
-  //     // Clear form fields
-
-  //     console.log({
-  //         email,
-  //         password,
-  //     });
-  //     setEmail('')
-  //     setPassword('')
-
-  // }
-
   const inputBorderColor = useColorModeValue("gray.300", "whiteAlpha.300");
-  // const buttonBgColor = useColorModeValue('brand.primary', 'gray.700')
   const buttonColor = useColorModeValue("white", "white");
 
   return (
-    <Box
-      maxW="sm"
-      mx="auto"
-      mt="10"
-      p="6"
-      //   borderRadius="md"
-      //   borderWidth="1px"
-      //   borderColor={inputBorderColor}
-    >
+    <Box maxW="sm" mx="auto" p="6">
       <Image
         my={6}
         mx="auto"
@@ -94,8 +102,6 @@ const LoginForm = () => {
                 },
               })}
               placeholder="Email address"
-              value={email}
-              onChange={handleEmailChange}
               borderColor={inputBorderColor}
             />
             <FormErrorMessage>
@@ -104,30 +110,30 @@ const LoginForm = () => {
           </FormControl>
           <FormControl isInvalid={errors.password}>
             {/* <FormLabel>Password</FormLabel> */}
-            <Input
-              type="password"
-              id="password"
-              {...register("password", {
-                required: "Please enter password",
-                minLength: {
-                  value: 6,
-                  message: "Minimal password is 6 characters",
-                },
-              })}
-              placeholder="Password"
-              value={password}
-              onChange={handlePasswordChange}
-              borderColor={inputBorderColor}
-            />
+            <InputGroup>
+              <Input
+                type={show ? "text" : "password"}
+                id="password"
+                {...register("password", {
+                  required: "Please enter password",
+                  minLength: {
+                    value: 6,
+                    message: "Minimal password is 6 characters",
+                  },
+                })}
+                placeholder="Password"
+                borderColor={inputBorderColor}
+              />
+              <InputRightElement>
+                <Box cursor="pointer" onClick={() => setShow(!show)}>
+                  {show ? <VscEyeClosed /> : <VscEye />}
+                </Box>
+              </InputRightElement>
+            </InputGroup>
             <FormErrorMessage>
               {errors.password && errors.password.message}
             </FormErrorMessage>
           </FormControl>
-          {error && (
-            <Box mt="2">
-              <FormErrorMessage>{error}</FormErrorMessage>
-            </Box>
-          )}
           <CheckboxGroup colorScheme="green" defaultValue={[]}>
             <Stack direction="row" justifyContent="space-between">
               <Box>
@@ -140,7 +146,7 @@ const LoginForm = () => {
               </Box>
               <Box>
                 <Text fontSize="xs">
-                  <a href="#">Forgotten your password?</a>
+                  <Link href="#">Forgotten your password?</Link>
                 </Text>
               </Box>
             </Stack>

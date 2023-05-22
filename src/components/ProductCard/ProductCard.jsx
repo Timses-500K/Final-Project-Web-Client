@@ -15,11 +15,12 @@ const ProductCard = ({ data: product }) => {
         whileHover={{ scale: 1.05 }}
         cursor="pointer"
         boxShadow="lg"
+        maxWidth={400}
       >
         <CldImage
-          width={800}
-          height={800}
-          src="nike/p2_hel1qp"
+          width={1200}
+          height={1200}
+          src={product.imageUrl}
           alt="Nike Product"
         />
         {/* <Image
@@ -30,27 +31,32 @@ const ProductCard = ({ data: product }) => {
           style={{ objectFit: "cover" }}
         /> */}
         <Box p={4} color="blackAlpha.900">
-          <Heading as="h2" size="md">
+          <Heading as="h2" size={{ base: "sm", md: "md" }} mb={2}>
             {product.itemName}
           </Heading>
           <Flex alignItems="center">
             <Text
               mr={2}
-              fontSize="lg"
-              fontWeight="semibold"
-              color="blackAlpha.700"
+              fontSize={{ base: "sm", md: "md" }}
+              fontWeight="bold"
+              color="blackAlpha.800"
             >
               Rp. {product.price - product.price * 0.2}
             </Text>
             <Text
-              fontSize="md"
-              fontWeight="medium"
+              fontSize={{ base: "sm", md: "sm" }}
+              fontWeight="semibold"
               textDecoration="line-through"
-              color="blackAlpha.500"
+              color="blackAlpha.600"
             >
               Rp. {product.price}
             </Text>
-            <Text fontSize="md" fontWeight="medium" ml="auto" color="green.500">
+            <Text
+              fontSize={{ base: "sm", md: "md" }}
+              fontWeight="semibold"
+              ml="auto"
+              color="green.500"
+            >
               20% Off
             </Text>
           </Flex>

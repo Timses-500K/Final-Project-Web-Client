@@ -159,6 +159,7 @@ const Cart = () => {
                     transition="transform .3s ease-out"
                     _active={{ transform: "scale(0.95)" }}
                     mb={3}
+                    onClick={() => router.push("login?redirect=/shipping")}
                   >
                     Checkout
                   </Button>
@@ -287,7 +288,7 @@ const Cart = () => {
                     transition="transform .3s ease-out"
                     _active={{ transform: "scale(0.95)" }}
                     mb={3}
-                    onClick={() => router.push("login?redirect=/shipping")}
+                    isDisabled={true}
                   >
                     Checkout
                   </Button>

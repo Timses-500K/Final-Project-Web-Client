@@ -5,8 +5,10 @@ import Image from "next/image";
 import MainMenu from "./MainMenu";
 import { useEffect, useState } from "react";
 import MobileMenu from "./MobileMenu";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
+  const { data: session } = useSession();
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showNav, setShowNav] = useState(0);
@@ -84,29 +86,42 @@ const Navbar = () => {
               <Box fontSize={12} color="blackAlpha.800">
                 |
               </Box>
-              <Link href="/register">
+              {session?.user ? (
                 <Box
                   fontSize={12}
                   color="blackAlpha.800"
                   _hover={{ color: "gray.500" }}
                   cursor="pointer"
                 >
-                  Join Us
+                  Hi, {session.user.name}
                 </Box>
-              </Link>
-              <Box fontSize={12} color="blackAlpha.800">
-                |
-              </Box>
-              <Link href="/login">
-                <Box
-                  fontSize={12}
-                  color="blackAlpha.800"
-                  _hover={{ color: "gray.500" }}
-                  cursor="pointer"
-                >
-                  Sign In
-                </Box>
-              </Link>
+              ) : (
+                <>
+                  <Link href="/register">
+                    <Box
+                      fontSize={12}
+                      color="blackAlpha.800"
+                      _hover={{ color: "gray.500" }}
+                      cursor="pointer"
+                    >
+                      Join Us
+                    </Box>
+                  </Link>
+                  <Box fontSize={12} color="blackAlpha.800">
+                    |
+                  </Box>
+                  <Link href="/login">
+                    <Box
+                      fontSize={12}
+                      color="blackAlpha.800"
+                      _hover={{ color: "gray.500" }}
+                      cursor="pointer"
+                    >
+                      Sign In
+                    </Box>
+                  </Link>
+                </>
+              )}
             </Flex>
           </Flex>
         </Box>
