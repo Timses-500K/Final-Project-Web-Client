@@ -1,10 +1,11 @@
 import Wrapper from "@/components/Navbar/Wrapper";
 import ProductCard from "@/components/ProductCard/ProductCard";
 import Hero from "@/components/Slider/Hero";
-import { Box, Button, Grid, Heading, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import Head from "next/head";
+import { fetchDataFromAPI } from "../helper/api";
 
-export default function Home() {
+export default function Home({ products }) {
   return (
     <>
       <Head>
@@ -59,17 +60,21 @@ export default function Home() {
             </Button>
           </Box>
           <SimpleGrid minChildWidth={400} gap={5} my={14}>
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            {products?.map((product) => (
+              <ProductCard key={product?.id} data={product} />
+            ))}
           </SimpleGrid>
         </Wrapper>
       </Box>
     </>
   );
+}
+
+export async function getStaticProps() {
+  const products = await fetchDataFromAPI("/product");
+  return {
+    props: {
+      products,
+    },
+  };
 }

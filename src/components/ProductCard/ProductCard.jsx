@@ -1,11 +1,12 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import { CldImage } from "next-cloudinary";
 import Image from "next/image";
 import Link from "next/link";
 
-const ProductCard = () => {
+const ProductCard = ({ data: product }) => {
   return (
-    <Link href="/">
+    <Link href={`/products/${product.id}`}>
       <Box
         as={motion.div}
         overflow="hidden"
@@ -15,16 +16,22 @@ const ProductCard = () => {
         cursor="pointer"
         boxShadow="lg"
       >
-        <Image
+        <CldImage
           width={800}
           height={800}
-          src="/p4.png"
+          src="nike/p2_hel1qp"
+          alt="Nike Product"
+        />
+        {/* <Image
+          width={800}
+          height={800}
+          src={product.image_url}
           alt="image"
           style={{ objectFit: "cover" }}
-        />
+        /> */}
         <Box p={4} color="blackAlpha.900">
-          <Heading as="h2" size="lg">
-            Nike Runner
+          <Heading as="h2" size="md">
+            {product.itemName}
           </Heading>
           <Flex alignItems="center">
             <Text
@@ -33,7 +40,7 @@ const ProductCard = () => {
               fontWeight="semibold"
               color="blackAlpha.700"
             >
-              Rp. 250000
+              Rp. {product.price - product.price * 0.2}
             </Text>
             <Text
               fontSize="md"
@@ -41,7 +48,7 @@ const ProductCard = () => {
               textDecoration="line-through"
               color="blackAlpha.500"
             >
-              Rp. 350000
+              Rp. {product.price}
             </Text>
             <Text fontSize="md" fontWeight="medium" ml="auto" color="green.500">
               20% Off

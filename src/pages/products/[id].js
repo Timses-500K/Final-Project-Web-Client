@@ -9,11 +9,21 @@ import {
   SimpleGrid,
   Text,
   UnorderedList,
+  useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext, useState } from "react";
 import { BsHeart } from "react-icons/bs";
+import { fetchDataFromAPI } from "../../helper/api";
+// import { useDispatch } from "react-redux";
+import { addToCart } from "@/store/cartSlice";
+import { Store } from "@/helper/store";
 
-const ProductDetails = () => {
+const ProductDetails = ({ product, products }) => {
+  // const dispatch = useDispatch();
+  const [selectedSize, setSelectedSize] = useState();
+  const [showErrorSize, setShowErrorSize] = useState(false);
+  const toast = useToast();
+  const { state, dispatch } = useContext(Store);
   return (
     <Box w="full" py={{ md: 10 }}>
       <Wrapper>
@@ -32,13 +42,13 @@ const ProductDetails = () => {
           </Flex>
           <Box flex={1}>
             <Text fontSize={34} fontWeight="semibold">
-              Nike Jordan Aero G7
+              {product.itemName}
             </Text>
             <Text fontSize="lg" mb={5}>
-              Men's Sneaker Shoes
+              {product.itemName}
             </Text>
             <Text fontSize="lg" fontWeight="semibold">
-              Rp. 250,000
+              Rp. {product.price}
             </Text>
             <Text fontSize="sm" fontWeight="medium" color="blackAlpha.500">
               Include of taxes
@@ -65,121 +75,34 @@ const ProductDetails = () => {
                   Select Guide
                 </Text>
               </Flex>
-              <SimpleGrid columns={3} spacing={5}>
-                <Box
-                  border="1px"
-                  borderColor="blackAlpha.300"
-                  rounded="md"
-                  textAlign="center"
-                  py={3}
-                  fontSize={"medium"}
-                  _hover={{ borderColor: "black" }}
-                  cursor="pointer"
-                >
-                  UK 6
-                </Box>
-                <Box
-                  border="1px"
-                  borderColor="blackAlpha.300"
-                  rounded="md"
-                  textAlign="center"
-                  py={3}
-                  fontSize={"medium"}
-                  _hover={{ borderColor: "black" }}
-                  cursor="pointer"
-                >
-                  UK 6
-                </Box>
-                <Box
-                  border="1px"
-                  borderColor="blackAlpha.300"
-                  rounded="md"
-                  textAlign="center"
-                  py={3}
-                  fontSize={"medium"}
-                  _hover={{ borderColor: "black" }}
-                  cursor="pointer"
-                >
-                  UK 6
-                </Box>
-                <Box
-                  border="1px"
-                  borderColor="blackAlpha.300"
-                  rounded="md"
-                  textAlign="center"
-                  py={3}
-                  fontSize={"medium"}
-                  _hover={{ borderColor: "black" }}
-                  cursor="pointer"
-                >
-                  UK 6
-                </Box>
-                <Box
-                  border="1px"
-                  borderColor="blackAlpha.300"
-                  rounded="md"
-                  textAlign="center"
-                  py={3}
-                  fontSize={"medium"}
-                  _hover={{ borderColor: "black" }}
-                  cursor="pointer"
-                >
-                  UK 6
-                </Box>
-                <Box
-                  border="1px"
-                  borderColor="blackAlpha.300"
-                  rounded="md"
-                  textAlign="center"
-                  py={3}
-                  fontSize={"medium"}
-                  _hover={{ borderColor: "black" }}
-                  cursor="pointer"
-                >
-                  UK 6
-                </Box>
-                <Box
-                  border="1px"
-                  borderColor="blackAlpha.300"
-                  rounded="md"
-                  textAlign="center"
-                  py={3}
-                  fontSize={"medium"}
-                  _hover={{ borderColor: "black" }}
-                  cursor="pointer"
-                >
-                  UK 6
-                </Box>
-                <Box
-                  border="1px"
-                  borderColor="blackAlpha.100"
-                  bg="blackAlpha.100"
-                  rounded="md"
-                  textAlign="center"
-                  py={3}
-                  fontSize={"medium"}
-                  cursor="not-allowed"
-                  opacity={50}
-                >
-                  UK 6
-                </Box>
-                <Box
-                  border="1px"
-                  borderColor="blackAlpha.100"
-                  bg="blackAlpha.100"
-                  rounded="md"
-                  textAlign="center"
-                  py={3}
-                  fontSize={"medium"}
-                  cursor="not-allowed"
-                  opacity={50}
-                >
-                  UK 6
-                </Box>
+              <SimpleGrid columns={3} spacing={5} id="simpleSizeGrid" pb={5}>
+                {product?.itemSize?.map((size, i) => (
+                  <Box
+                    key={i}
+                    border="1px"
+                    borderColor={
+                      selectedSize === size.size ? "black" : "blackAlpha.300"
+                    }
+                    rounded="md"
+                    textAlign="center"
+                    py={3}
+                    fontSize={"medium"}
+                    _hover={{ borderColor: "black" }}
+                    cursor="pointer"
+                    onClick={() => {
+                      setSelectedSize(size.size);
+                      setShowErrorSize(false);
+                    }}
+                  >
+                    {size.size}
+                  </Box>
+                ))}
               </SimpleGrid>
-              <Text color="red.600" mt={1} mb={10}>
-                Please select a size.
-              </Text>
+              {showErrorSize && (
+                <Text color="red.600" mt={1} mb={10}>
+                  Please select a size.
+                </Text>
+              )}
               <Button
                 w="full"
                 size="lg"
@@ -190,6 +113,47 @@ const ProductDetails = () => {
                 transition="transform .3s ease-out"
                 _active={{ transform: "scale(0.95)" }}
                 mb={3}
+                onClick={() => {
+                  if (!selectedSize) {
+                    setShowErrorSize(true);
+                    document.getElementById("simpleSizeGrid").scrollIntoView({
+                      block: "center",
+                      behavior: "smooth",
+                    });
+                  } else {
+                    const existItem = state.cart.cartItems.find(
+                      (item) =>
+                        item.id === product.id &&
+                        item.selectedSize === selectedSize
+                    );
+                    const quantity = existItem ? existItem.quantity + 1 : 1;
+                    if (product.stock < quantity) {
+                      toast({
+                        title: "Sorry, we are out of stock",
+                        status: "error",
+                        position: "top",
+                        isClosable: true,
+                      });
+                      return;
+                    }
+                    dispatch({
+                      type: "ADD_ITEM",
+                      payload: { ...product, selectedSize, quantity },
+                    });
+                    toast({
+                      title: "Yeay, your shoes was added.",
+                      status: "success",
+                      position: "top",
+                      isClosable: true,
+                    });
+                  }
+                  // dispatch(
+                  //   addToCart({
+                  //     ...product,
+                  //     oneQuantityPrice: product.price,
+                  //   })
+                  // );
+                }}
               >
                 Add to cart
               </Button>
@@ -230,10 +194,36 @@ const ProductDetails = () => {
             </Box>
           </Box>
         </Flex>
-        <RelatedProducts />
+        <RelatedProducts products={products} />
       </Wrapper>
     </Box>
   );
 };
 
 export default ProductDetails;
+
+export async function getStaticPaths() {
+  const products = await fetchDataFromAPI("/product");
+  const paths = products.map((p) => ({
+    params: {
+      id: `${p.id}`,
+    },
+  }));
+  return {
+    paths,
+    fallback: false,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  const product = await fetchDataFromAPI(`/productDetail/${params.id}`);
+  const products = await fetchDataFromAPI("/product");
+  // const sizes = await fetchDataFromAPI(`/product/${params.id}/sizes`);
+  return {
+    props: {
+      product,
+      products,
+      // sizes,
+    },
+  };
+}

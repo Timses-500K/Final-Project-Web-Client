@@ -116,7 +116,7 @@ const RegisterForm = () => {
             confirmPassword,
             birthdate
         }
-        postData("http://localhost:3001/register", payload)
+        postData("http://localhost:3001/api/register", payload)
 
         // {
         //     "name": "string",
