@@ -1,6 +1,7 @@
+import { Store } from "@/helper/store";
 import { Box, Flex, Hide } from "@chakra-ui/react";
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import { BsChevronDown } from "react-icons/bs";
 
 const mainMenu = [
@@ -18,6 +19,8 @@ const subMenu = [
 ];
 
 const MobileMenu = ({ showSubMenu, setShowSubMenu, setMobileMenu }) => {
+  const { dispatch, state } = useContext(Store);
+  const { cart, nav } = state;
   return (
     <>
       <Hide breakpoint="(min-width: 768px)">
@@ -58,9 +61,12 @@ const MobileMenu = ({ showSubMenu, setShowSubMenu, setMobileMenu }) => {
                     </Flex>
                     {showSubMenu && (
                       <Box bg="blackAlpha.50" mx={-5} mt={4} mb={-4}>
-                        {subMenu.map((submenu) => {
+                        {nav?.categories?.map((category) => {
                           return (
-                            <Link key={submenu.id} href={submenu.url}>
+                            <Link
+                              key={category.id}
+                              href={`/category/${category.categoryName}`}
+                            >
                               <Flex
                                 justify="space-between"
                                 px={8}
@@ -71,9 +77,9 @@ const MobileMenu = ({ showSubMenu, setShowSubMenu, setMobileMenu }) => {
                                   setMobileMenu(false);
                                 }}
                               >
-                                {submenu.name}
+                                {category.categoryName}
                                 <Box fontSize="sm" color="gray.400">
-                                  {submenu.doc_count}
+                                  {category.categoryItem.length}
                                 </Box>
                               </Flex>
                             </Link>

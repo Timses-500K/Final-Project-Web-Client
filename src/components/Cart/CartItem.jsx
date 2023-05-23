@@ -4,16 +4,11 @@ import Image from "next/image";
 import { useContext } from "react";
 import { Store } from "@/helper/store";
 import Link from "next/link";
+import { CldImage } from "next-cloudinary";
 
 const CartItem = ({ data: item }) => {
   const { dispatch } = useContext(Store);
-  // const updateCartHandler = (item, q) => {
-  //   const qty = parseInt(q);
-  //   dispatch({
-  //     type: "ADD_ITEM",
-  //     payload: { ...item, qty },
-  //   });
-  // };
+
   return (
     <Flex
       py={5}
@@ -22,7 +17,12 @@ const CartItem = ({ data: item }) => {
       borderColor="blackAlpha.500"
     >
       <Box w={{ base: "80px", md: "120px" }} flexShrink={0} aspectRatio="1/1">
-        <Image src="/p2.png" alt="product image" width={120} height={120} />
+        <CldImage
+          src={item.imageUrl}
+          alt="product image"
+          width={120}
+          height={120}
+        />
       </Box>
       <Flex w="full" flexDirection="column">
         <Flex
@@ -88,7 +88,7 @@ const CartItem = ({ data: item }) => {
                 }}
               >
                 {" "}
-                {item.itemSize.map((size, i) => {
+                {item?.itemSize?.map((size, i) => {
                   return (
                     <option
                       key={i}

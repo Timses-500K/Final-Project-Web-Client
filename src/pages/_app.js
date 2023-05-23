@@ -6,11 +6,14 @@ import Footer from "@/components/Footer/Footer";
 // import { Provider } from "react-redux";
 // import store from "@/store/store";
 import { StoreProvider } from "@/helper/store";
-import { AuthProvider } from "@/helper/auth";
+import { SessionProvider } from "next-auth/react";
 
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   return (
-    <AuthProvider>
+    <SessionProvider session={session}>
       <StoreProvider>
         <ChakraProvider>
           <Navbar />
@@ -18,6 +21,6 @@ export default function App({ Component, pageProps }) {
           <Footer />
         </ChakraProvider>
       </StoreProvider>
-    </AuthProvider>
+    </SessionProvider>
   );
 }

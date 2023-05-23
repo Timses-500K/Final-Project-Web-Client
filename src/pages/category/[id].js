@@ -1,7 +1,7 @@
 import Wrapper from "@/components/Navbar/Wrapper";
 import ProductCard from "@/components/ProductCard/ProductCard";
 import { Box, Center, SimpleGrid, Text } from "@chakra-ui/react";
-import { fetchDataFromAPI } from "../../helper/api";
+import { fetchDataFromAPI } from "../../modules/fetch";
 
 const Category = ({ products }) => {
   return (
@@ -12,14 +12,14 @@ const Category = ({ products }) => {
             fontSize={{ base: 28, md: 34 }}
             mb={5}
             fontWeight="semibold"
-            lineHeight={1.25}
+            lineHeight={1.5}
           >
-            Running Shoes
+            {products.categoryName}
           </Text>
         </Center>
-        <SimpleGrid minChildWidth={400} gap={5} my={14}>
-          {products?.map((product) => (
-            <ProductCard key={product.id} data={product} />
+        <SimpleGrid minChildWidth={250} gap={5} my={14}>
+          {products?.CategoryItems?.map((product) => (
+            <ProductCard key={product?.Item.id} data={product.Item} />
           ))}
         </SimpleGrid>
       </Wrapper>
@@ -33,7 +33,7 @@ export async function getStaticPaths() {
   const categories = await fetchDataFromAPI("/dashboard/category");
   const paths = categories.map((c) => ({
     params: {
-      id: `${c.id}`,
+      id: `${c.categoryName}`,
     },
   }));
   return {
@@ -43,7 +43,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const products = await fetchDataFromAPI(`/dashboard/category/${params.id}`);
+  const products = await fetchDataFromAPI(`/product/${params.id}`);
   return {
     props: {
       products,

@@ -13,9 +13,9 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { BsHeart } from "react-icons/bs";
-import { fetchDataFromAPI } from "../../helper/api";
+import { fetchDataFromAPI } from "../../modules/fetch";
 // import { useDispatch } from "react-redux";
-import { addToCart } from "@/store/cartSlice";
+// import { addToCart } from "@/store/cartSlice";
 import { Store } from "@/helper/store";
 
 const ProductDetails = ({ product, products }) => {
