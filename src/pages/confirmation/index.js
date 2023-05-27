@@ -240,11 +240,20 @@ const Confirmation = () => {
                   onClick={async () => {
                     if (isLoggedIn) {
                       for (let i = 0; i < state.cart.cartItems.length; i++) {
+                        console.log(state.cart.cartItems[i], "<<<<cartItems");
+                        const filteredSize = state.cart.cartItems[
+                          i
+                        ].itemSize.find(
+                          (size) =>
+                            size.ItemSize.size ===
+                            state.cart.cartItems.selectedSize
+                        );
+                        console.log(filteredSize.id, "<<<<<itemsize");
                         await addToCart(
                           selectedAddress,
                           state.cart.cartItems[i].id,
-                          state.cart.cartItems[i].itemSize.id,
-                          state.cart.cartItems[i]
+                          filteredSize.id,
+                          state.cart.cartItems[i].quantity
                         );
                       }
                       await createOrder();

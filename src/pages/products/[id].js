@@ -24,6 +24,7 @@ import cart from "../cart";
 
 const ProductDetails = ({ product, products }) => {
   // const dispatch = useDispatch();
+  console.log(product, "<<<<<product");
   const router = useRouter();
   const [selectedSize, setSelectedSize] = useState();
   const [stock, setStock] = useState(0);
@@ -51,7 +52,7 @@ const ProductDetails = ({ product, products }) => {
             <Text fontSize={34} fontWeight="semibold">
               {product.itemName}
             </Text>
-            <Text fontSize="lg">{product.itemCategory?.[0].categoryName}</Text>
+            <Text fontSize="lg">{product.itemCategory.categoryName}</Text>
             <Text fontSize="sm" mb={5}>
               Color: {product.color}
             </Text>
@@ -257,6 +258,7 @@ export async function getStaticProps({ params }) {
   const product = await fetchDataFromAPI(`/productDetail/${params.id}`);
   const products = await fetchDataFromAPI("/product");
   // const sizes = await fetchDataFromAPI(`/product/${params.id}/sizes`);
+
   return {
     props: {
       product: product.productDetails,

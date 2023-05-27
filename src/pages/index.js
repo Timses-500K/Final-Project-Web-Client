@@ -64,7 +64,7 @@ export default function Home({ products }) {
           </Box>
           <SimpleGrid minChildWidth={400} gap={5} my={14}>
             {products?.map((product) => (
-              <ProductCard key={product?.id} data={product} />
+              <ProductCard key={product.id} data={product} />
             ))}
           </SimpleGrid>
         </Wrapper>

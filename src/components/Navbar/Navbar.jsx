@@ -9,9 +9,11 @@ import MobileMenu from "./MobileMenu";
 import Cookies from "js-cookie";
 import { Store } from "@/helper/store";
 import { useAuth } from "@/modules/context/authCotext";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   // const { data: session } = useSession();
+  const router = useRouter();
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -147,6 +149,7 @@ const Navbar = () => {
                           Cookies.remove("cart");
                           dispatch({ type: "CART_RESET" });
                           setIsLoggedIn(false);
+                          router.push("/");
                         }}
                         // onClick={() => {
                         //   Cookies.remove("cart");
