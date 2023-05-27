@@ -26,9 +26,11 @@ import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 // import { getSession, useSession } from "next-auth/react";
 import OrderItem from "@/components/Order/OrderItem";
-import { getUser } from "@/modules/fetch";
+import { addToCart, createOrder, getUser } from "@/modules/fetch";
 import { instance } from "@/modules/axios";
 import Loading from "@/components/Loading/Loading";
+import { convertToRupiah } from "@/helper/custom";
+import { useAuth } from "@/modules/context/authCotext";
 // import { instance } from "@/modules/axios";
 // import axios from "axios";
 // import Cookies from "js-cookie";
@@ -39,18 +41,14 @@ import Loading from "@/components/Loading/Loading";
 const Confirmation = () => {
   // const { cartItems } = useSelector((state) => state.cart);
   // const { data: session, status } = useSession();
-  // console.log(user, "<<<<< user");
-  // console.log(session, "<<<< session");
   const router = useRouter();
   const toast = useToast();
   const { state, dispatch } = useContext(Store);
   const [user, setUser] = useState({});
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
 
   const [isLoading, setIsLoading] = useState(true);
-
-  if (isLoading) {
-    return <>Loading...</>;
-  }
+  const [selectedAddress, setSelectedAddress] = useState();
 
   const fetchUser = async () => {
     const data = await getUser();
@@ -62,21 +60,19 @@ const Confirmation = () => {
     setIsLoading(true);
     fetchUser();
   }, []);
-  // const {
-  //   cart: { cartItems },
-  // } = state;
-  // const [loggedUser, setLoogedUser] = useState({});
-  // useEffect(() => {
-  //   const token = Cookies.get("accesstoken");
-  //   console.log(token, "<<<<token");
-  //   const user = async () => {
-  //     const get_user = await instance.get("/user", {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     });
-  //     return get_user;
-  //   };
-  //   setLoogedUser(user);
-  // });
+
+  if (isLoading) {
+    return (
+      <>
+        <Loading />
+      </>
+    );
+  }
+
+  const handleChange = (e) => {
+    console.log(e.target.value);
+    setSelectedAddress(e.target.value);
+  };
 
   return (
     <>
@@ -101,101 +97,24 @@ const Confirmation = () => {
             <Box flex={2}>
               <Text fontSize="2xl" fontWeight="bold" pb={10}>
                 Contact Information
-                {JSON.stringify(user)}
               </Text>
               <Box>
                 <FormControl>
                   <FormLabel fontWeight="semibold">First Name</FormLabel>
-                  <Input type="text" isReadOnly value="" />
+                  <Input type="text" isReadOnly value={user.firstName} />
                   <FormLabel fontWeight="semibold">Last Name</FormLabel>
-                  <Input type="text" isReadOnly value="" />
+                  <Input type="text" isReadOnly value={user.lastName} />
                   <FormLabel fontWeight="semibold">Email address</FormLabel>
-                  <Input type="email" isReadOnly value="" />
-                  <FormLabel fontWeight="semibold">Phone</FormLabel>
-                  <Input type="number" />
+                  <Input type="email" isReadOnly value={user.email} />
                   <FormLabel fontWeight="semibold">Address</FormLabel>
-                  <Select placeholder="Select address">
-                    {/* {user.addresses?.map((addr) => (
-                      <option>{addr.address}</option>
-                    ))} */}
+                  <Select placeholder="Select address" onChange={handleChange}>
+                    {user.Addresses?.map((addr, index) => (
+                      <option key={index} value={addr.id}>
+                        {addr.address}
+                      </option>
+                    ))}
                   </Select>
                 </FormControl>
-                {/* <TableContainer>
-                  <Table variant="simple">
-                    <Tbody>
-                      <Tr>
-                        <Td fontWeight="bold">First Name</Td>
-                        <Td>Dedit</Td>
-                      </Tr>
-                      <Tr>
-                        <Td fontWeight="bold">Last Name</Td>
-                        <Td>Suprastyo</Td>
-                      </Tr>
-                      <Tr>
-                        <Td fontWeight="bold">Email</Td>
-                        <Td>arek.nggantenk@gmail.com</Td>
-                      </Tr>
-                      <Tr>
-                        <Td fontWeight="bold">Phone Number</Td>
-                        <Td>085264865959</Td>
-                      </Tr>
-                      <Tr>
-                        <Td fontWeight="bold">Address</Td>
-                        <Td>
-                          Perumahan Bandar Srimas Blok I No. 5 Sungai Panas
-                        </Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-                </TableContainer> */}
-                {/* <Flex justify="start">
-                  <Text
-                    fontSize={{ base: "md", lg: "lg" }}
-                    fontWeight="bold"
-                    color="black"
-                  >
-                    First Name
-                  </Text>
-                  <Text
-                    fontSize={{ base: "md", lg: "lg" }}
-                    fontWeight="medium"
-                    color="black"
-                  >
-                    : Dedit
-                  </Text>
-                </Flex>
-                <Flex justify="start">
-                  <Text
-                    fontSize={{ base: "md", lg: "lg" }}
-                    fontWeight="bold"
-                    color="black"
-                  >
-                    Last Name
-                  </Text>
-                  <Text
-                    fontSize={{ base: "md", lg: "lg" }}
-                    fontWeight="medium"
-                    color="black"
-                  >
-                    : Suprastyo
-                  </Text>
-                </Flex>
-                <Flex justify="start">
-                  <Text
-                    fontSize={{ base: "md", lg: "lg" }}
-                    fontWeight="bold"
-                    color="black"
-                  >
-                    Email
-                  </Text>
-                  <Text
-                    fontSize={{ base: "md", lg: "lg" }}
-                    fontWeight="medium"
-                    color="black"
-                  >
-                    : arek.nggantenk@gmail.com
-                  </Text>
-                </Flex> */}
               </Box>
             </Box>
             <Box flex={1}>
@@ -217,10 +136,13 @@ const Confirmation = () => {
                     fontWeight="medium"
                     color="black"
                   >
-                    Rp.{" "}
-                    {state.cart.cartItems.reduce(
-                      (a, c) => a + c.quantity * (c.price - c.price * 0.2),
-                      0
+                    {convertToRupiah(
+                      Math.floor(
+                        state.cart.cartItems.reduce(
+                          (a, c) => a + c.quantity * (c.price - c.price * 0.2),
+                          0
+                        )
+                      )
                     )}
                   </Text>
                 </Flex>
@@ -233,11 +155,14 @@ const Confirmation = () => {
                     fontWeight="medium"
                     color="black"
                   >
-                    Rp.{" "}
-                    {state.cart.cartItems.reduce(
-                      (a, c) => a + c.quantity * (c.price - c.price * 0.2),
-                      0
-                    ) * 0.01}
+                    {convertToRupiah(
+                      Math.floor(
+                        state.cart.cartItems.reduce(
+                          (a, c) => a + c.quantity * (c.price - c.price * 0.2),
+                          0
+                        ) * 0.01
+                      )
+                    )}
                   </Text>
                 </Flex>
                 <Flex
@@ -284,16 +209,21 @@ const Confirmation = () => {
                       fontWeight="medium"
                       color="black"
                     >
-                      Rp.{" "}
-                      {state.cart.cartItems.reduce(
-                        (a, c) => a + c.quantity * (c.price - c.price * 0.2),
-                        0
-                      ) +
-                        state.cart.cartItems.reduce(
-                          (a, c) => a + c.quantity * (c.price - c.price * 0.2),
-                          0
-                        ) *
-                          0.01}
+                      {convertToRupiah(
+                        Math.floor(
+                          state.cart.cartItems.reduce(
+                            (a, c) =>
+                              a + c.quantity * (c.price - c.price * 0.2),
+                            0
+                          ) +
+                            state.cart.cartItems.reduce(
+                              (a, c) =>
+                                a + c.quantity * (c.price - c.price * 0.2),
+                              0
+                            ) *
+                              0.01
+                        )
+                      )}
                     </Text>
                   </Flex>
                 </Box>
@@ -307,22 +237,31 @@ const Confirmation = () => {
                   transition="transform .3s ease-out"
                   _active={{ transform: "scale(0.95)" }}
                   mb={3}
-                  // onClick={() => {
-                  //   if (status === "authenticated") {
-                  //     router.push("/shipping");
-                  //   } else {
-                  //     toast({
-                  //       title: "Alert!",
-                  //       description: "Sorry, please login to checkout!.",
-                  //       status: "warning",
-                  //       position: "top",
-                  //       isClosable: true,
-                  //     });
-                  //     router.push("/login");
-                  //   }
-                  // }}
+                  onClick={async () => {
+                    if (isLoggedIn) {
+                      for (let i = 0; i < state.cart.cartItems.length; i++) {
+                        await addToCart(
+                          selectedAddress,
+                          state.cart.cartItems[i].id,
+                          state.cart.cartItems[i].itemSize.id,
+                          state.cart.cartItems[i]
+                        );
+                      }
+                      await createOrder();
+                      router.push("/success");
+                    } else {
+                      toast({
+                        title: "Alert!",
+                        description: "Sorry, please login to checkout!.",
+                        status: "warning",
+                        position: "top",
+                        isClosable: true,
+                      });
+                      router.push("/login");
+                    }
+                  }}
                 >
-                  Checkout
+                  Order Now
                 </Button>
               </Box>
             </Box>
@@ -334,14 +273,5 @@ const Confirmation = () => {
 };
 
 export default Confirmation;
-
-// export async function getStaticProps() {
-//   const user = await instance.get("/user");
-//   return {
-//     props: {
-//       user,
-//     },
-//   };
-// }
 
 // Confirmation.auth = true;

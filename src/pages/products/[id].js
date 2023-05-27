@@ -20,6 +20,7 @@ import { Store } from "@/helper/store";
 import { convertToRupiah } from "@/helper/custom";
 import { useAuth } from "@/modules/context/authCotext";
 import { useRouter } from "next/router";
+import cart from "../cart";
 
 const ProductDetails = ({ product, products }) => {
   // const dispatch = useDispatch();
@@ -50,8 +51,9 @@ const ProductDetails = ({ product, products }) => {
             <Text fontSize={34} fontWeight="semibold">
               {product.itemName}
             </Text>
-            <Text fontSize="lg" mb={5}>
-              {product.itemCategory?.[0].categoryName}
+            <Text fontSize="lg">{product.itemCategory?.[0].categoryName}</Text>
+            <Text fontSize="sm" mb={5}>
+              Color: {product.color}
             </Text>
             <Text fontSize="lg" fontWeight="semibold">
               {convertToRupiah(product.price)}
@@ -169,6 +171,7 @@ const ProductDetails = ({ product, products }) => {
                       });
                       return;
                     }
+                    console.log(state.cart.cartItems, "<<<<<cart");
                     dispatch({
                       type: "ADD_ITEM",
                       payload: { ...product, selectedSize, quantity },
@@ -256,7 +259,7 @@ export async function getStaticProps({ params }) {
   // const sizes = await fetchDataFromAPI(`/product/${params.id}/sizes`);
   return {
     props: {
-      product,
+      product: product.productDetails,
       products,
       // sizes,
     },

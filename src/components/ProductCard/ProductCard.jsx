@@ -18,19 +18,19 @@ const ProductCard = ({ data: product }) => {
         boxShadow="lg"
         minWidth={200}
       >
-        <CldImage
+        {/* <CldImage
           width={1200}
           height={1200}
           src={product.imageUrl}
           alt="Nike Product"
-        />
-        {/* <Image
+        /> */}
+        <Image
           width={800}
           height={800}
-          src={product.image_url}
+          src={product.imageUrl}
           alt="image"
           style={{ objectFit: "cover" }}
-        /> */}
+        />
         <Box p={4} color="blackAlpha.900">
           <Heading as="h2" size={{ base: "sm", md: "md" }} mb={2}>
             {product.itemName}

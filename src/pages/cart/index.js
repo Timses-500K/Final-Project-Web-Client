@@ -13,12 +13,14 @@ import {
 } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 // import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Loading from "@/components/Loading/Loading";
 import Cookies from "js-cookie";
 import { useAuth } from "@/modules/context/authCotext";
+import { convertToRupiah } from "@/helper/custom";
+import { addToCart, checkCart, getUser } from "@/modules/fetch";
 // import { useSelector } from "react-redux";
 
 const Cart = () => {
@@ -31,6 +33,7 @@ const Cart = () => {
     cart: { cartItems },
   } = state;
   const { isLoggedIn, setIsLoggedIn } = useAuth();
+  // const [user, setUser] = useState({});
   // if (status === "loading") {
   //   return <Loading />;
   // }
@@ -104,10 +107,14 @@ const Cart = () => {
                       fontWeight="medium"
                       color="black"
                     >
-                      Rp.{" "}
-                      {cartItems.reduce(
-                        (a, c) => a + c.quantity * (c.price - c.price * 0.2),
-                        0
+                      {convertToRupiah(
+                        Math.floor(
+                          cartItems.reduce(
+                            (a, c) =>
+                              a + c.quantity * (c.price - c.price * 0.2),
+                            0
+                          )
+                        )
                       )}
                     </Text>
                   </Flex>
@@ -120,11 +127,15 @@ const Cart = () => {
                       fontWeight="medium"
                       color="black"
                     >
-                      Rp.{" "}
-                      {cartItems.reduce(
-                        (a, c) => a + c.quantity * (c.price - c.price * 0.2),
-                        0
-                      ) * 0.01}
+                      {convertToRupiah(
+                        Math.floor(
+                          cartItems.reduce(
+                            (a, c) =>
+                              a + c.quantity * (c.price - c.price * 0.2),
+                            0
+                          ) * 0.01
+                        )
+                      )}
                     </Text>
                   </Flex>
                   <Flex
@@ -166,17 +177,21 @@ const Cart = () => {
                         fontWeight="medium"
                         color="black"
                       >
-                        Rp.{" "}
-                        {cartItems.reduce(
-                          (a, c) => a + c.quantity * (c.price - c.price * 0.2),
-                          0
-                        ) +
-                          cartItems.reduce(
-                            (a, c) =>
-                              a + c.quantity * (c.price - c.price * 0.2),
-                            0
-                          ) *
-                            0.01}
+                        {convertToRupiah(
+                          Math.floor(
+                            cartItems.reduce(
+                              (a, c) =>
+                                a + c.quantity * (c.price - c.price * 0.2),
+                              0
+                            ) +
+                              cartItems.reduce(
+                                (a, c) =>
+                                  a + c.quantity * (c.price - c.price * 0.2),
+                                0
+                              ) *
+                                0.01
+                          )
+                        )}
                       </Text>
                     </Flex>
                   </Box>
@@ -190,9 +205,17 @@ const Cart = () => {
                     transition="transform .3s ease-out"
                     _active={{ transform: "scale(0.95)" }}
                     mb={3}
-                    onClick={() => {
+                    // onClick={async () => {
+                    //   setUser(await getUser());
+                    //   console.log(user, "<<<<getUserXart");
+                    // }}
+                    // setUser(await getUser());
+                    // for(i=0;i<cartItems.length;i++){
+                    //   await addToCart(cartItems[i].id, cartItems[i].itemSize.id, quantity);
+                    // }
+                    onClick={async () => {
                       if (isLoggedIn) {
-                        router.push("/shipping");
+                        router.push("/confirmation");
                       } else {
                         toast({
                           title: "Alert!",
