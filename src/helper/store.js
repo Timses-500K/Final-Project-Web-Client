@@ -4,8 +4,9 @@ import { createContext, useReducer } from "react";
 export const Store = createContext();
 
 const getCategory = async () => {
-  const res = await fetchDataFromAPI("/dashboard/category");
-  return res;
+  // const res = await fetchDataFromAPI("/dashboard/category");
+  return {}
+  // return res;
 };
 
 const categories = await getCategory();
