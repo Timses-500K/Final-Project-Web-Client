@@ -3,17 +3,22 @@ import Wrapper from "./Wrapper";
 import Link from "next/link";
 import Image from "next/image";
 import MainMenu from "./MainMenu";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MobileMenu from "./MobileMenu";
-import { useSession } from "next-auth/react";
+// import { signOut, useSession } from "next-auth/react";
+import Cookies from "js-cookie";
+import { Store } from "@/helper/store";
+import { useAuth } from "@/modules/context/authCotext";
 
 const Navbar = () => {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const [showSubMenu, setShowSubMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showNav, setShowNav] = useState(0);
   const [navShadow, setNavShadow] = useState("none");
   const [lastScrollY, setLastScrollY] = useState(0);
+  const { state, dispatch } = useContext(Store);
 
   const controlNavbar = () => {
     if (window.scrollY > 150) {
@@ -37,6 +42,8 @@ const Navbar = () => {
       window.removeEventListener("scroll", controlNavbar);
     };
   }, [lastScrollY]);
+
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
 
   return (
     <>
@@ -86,15 +93,73 @@ const Navbar = () => {
               <Box fontSize={12} color="blackAlpha.800">
                 |
               </Box>
-              {session?.user ? (
-                <Box
+              {isLoggedIn ? (
+                <Flex
                   fontSize={12}
                   color="blackAlpha.800"
                   _hover={{ color: "gray.500" }}
                   cursor="pointer"
+                  onMouseEnter={() => setShowUserMenu(true)}
+                  onMouseLeave={() => setShowUserMenu(false)}
+                  position="relative"
                 >
-                  Hi, {session.user.name}
-                </Box>
+                  Hi, user
+                  {showUserMenu && (
+                    <Flex
+                      flexDirection="column"
+                      bg="white"
+                      position="absolute"
+                      left={0}
+                      top={4}
+                      minWidth="full"
+                      color="black"
+                      shadow="lg"
+                      zIndex={31}
+                    >
+                      <Link href="/profile">
+                        <Box
+                          fontSize="sm"
+                          color="gray.500"
+                          p={2}
+                          _hover={{ bg: "blackAlpha.50" }}
+                        >
+                          Profile
+                        </Box>
+                      </Link>
+                      <Link href="/transactions">
+                        <Box
+                          fontSize="sm"
+                          color="gray.500"
+                          p={2}
+                          _hover={{ bg: "blackAlpha.50" }}
+                        >
+                          Transactions
+                        </Box>
+                      </Link>
+                      <Box
+                        fontSize="sm"
+                        color="gray.500"
+                        cursor="pointer"
+                        p={2}
+                        _hover={{ bg: "blackAlpha.50" }}
+                        onClick={() => {
+                          Cookies.remove("isLoggedIn");
+                          Cookies.remove("cart");
+                          dispatch({ type: "CART_RESET" });
+                          setIsLoggedIn(false);
+                        }}
+                        // onClick={() => {
+                        //   Cookies.remove("cart");
+
+                        //   dispatch({ type: "CART_RESET" });
+                        //   // signOut({ callbackUrl: "/login" });
+                        // }}
+                      >
+                        Logout
+                      </Box>
+                    </Flex>
+                  )}
+                </Flex>
               ) : (
                 <>
                   <Link href="/register">

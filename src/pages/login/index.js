@@ -1,8 +1,18 @@
 import LoginForm from "@/components/Login/Login";
+import { useAuth } from "@/modules/context/authCotext";
 import { Center } from "@chakra-ui/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Products = () => {
+  const router = useRouter();
+  const { isLoggedIn } = useAuth();
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/");
+    }
+  }, [isLoggedIn]);
   return (
     <>
       <Head>

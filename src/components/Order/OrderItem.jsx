@@ -1,13 +1,22 @@
-import { Box, Flex, Hide, Select, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Hide,
+  Select,
+  Stat,
+  StatHelpText,
+  StatLabel,
+  StatNumber,
+  Text,
+} from "@chakra-ui/react";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import Image from "next/image";
 import { useContext } from "react";
 import { Store } from "@/helper/store";
 import Link from "next/link";
 import { CldImage } from "next-cloudinary";
 import { convertToRupiah } from "@/helper/custom";
 
-const CartItem = ({ data: item }) => {
+const OrderItem = ({ data: item }) => {
   const { dispatch } = useContext(Store);
 
   return (
@@ -25,12 +34,19 @@ const CartItem = ({ data: item }) => {
           height={120}
         />
       </Box>
-      <Flex w="full" flexDirection="column">
+      <Stat>
+        <StatLabel fontSize={20}>{item.itemName}</StatLabel>
+        <StatNumber>
+          {convertToRupiah(Math.floor(item.price - item.price * 0.2))}
+        </StatNumber>
+        <StatHelpText>Size: {item.selectedSize}</StatHelpText>
+        <StatHelpText>Qty: {item.quantity}</StatHelpText>
+      </Stat>
+      {/* <Flex w="full" flexDirection="column">
         <Flex
           flexDirection={{ base: "column", md: "row" }}
           justify="space-between"
         >
-          <Link href={`/products/${item.id}`}>
             <Text
               fontSize={{ base: "lg", md: "2xl" }}
               fontWeight="semibold"
@@ -38,7 +54,6 @@ const CartItem = ({ data: item }) => {
             >
               {item.itemName}
             </Text>
-          </Link>
           <Hide breakpoint="(min-width: 768px)">
             <Text
               fontSize={{ base: "sm", md: "md" }}
@@ -144,9 +159,9 @@ const CartItem = ({ data: item }) => {
             <RiDeleteBin6Line />
           </Box>
         </Flex>
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 };
 
-export default CartItem;
+export default OrderItem;

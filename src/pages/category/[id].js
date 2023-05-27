@@ -17,7 +17,7 @@ const Category = ({ products }) => {
             {products.categoryName}
           </Text>
         </Center>
-        <SimpleGrid minChildWidth={250} gap={5} my={14}>
+        <SimpleGrid minChildWidth={300} gap={5} my={4}>
           {products?.CategoryItems?.map((product) => (
             <ProductCard key={product?.Item.id} data={product.Item} />
           ))}
@@ -33,7 +33,7 @@ export async function getStaticPaths() {
   const categories = await fetchDataFromAPI("/dashboard/category");
   const paths = categories.map((c) => ({
     params: {
-      id: `${c.categoryName}`,
+      id: `${c.id}`,
     },
   }));
   return {

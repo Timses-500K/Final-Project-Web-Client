@@ -1,3 +1,4 @@
+import { convertToRupiah } from "@/helper/custom";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { CldImage } from "next-cloudinary";
@@ -15,7 +16,7 @@ const ProductCard = ({ data: product }) => {
         whileHover={{ scale: 1.05 }}
         cursor="pointer"
         boxShadow="lg"
-        maxWidth={400}
+        minWidth={200}
       >
         <CldImage
           width={1200}
@@ -41,7 +42,7 @@ const ProductCard = ({ data: product }) => {
               fontWeight="bold"
               color="blackAlpha.800"
             >
-              Rp. {product.price - product.price * 0.2}
+              {convertToRupiah(Math.floor(product.price - product.price * 0.2))}
             </Text>
             <Text
               fontSize={{ base: "sm", md: "sm" }}
@@ -49,7 +50,7 @@ const ProductCard = ({ data: product }) => {
               textDecoration="line-through"
               color="blackAlpha.600"
             >
-              Rp. {product.price}
+              {convertToRupiah(product.price)}
             </Text>
             <Text
               fontSize={{ base: "sm", md: "md" }}

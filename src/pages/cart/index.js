@@ -2,19 +2,50 @@ import CartItem from "@/components/Cart/CartItem";
 import Wrapper from "@/components/Footer/Wrapper";
 import { Store } from "@/helper/store";
 import { useRouter } from "next/router";
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Spinner,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useContext } from "react";
+// import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
+import Loading from "@/components/Loading/Loading";
+import Cookies from "js-cookie";
+import { useAuth } from "@/modules/context/authCotext";
 // import { useSelector } from "react-redux";
 
 const Cart = () => {
   // const { cartItems } = useSelector((state) => state.cart);
+  // const { data: session, status } = useSession();
   const router = useRouter();
+  const toast = useToast();
   const { state, dispatch } = useContext(Store);
   const {
     cart: { cartItems },
   } = state;
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
+  // if (status === "loading") {
+  //   return <Loading />;
+  // }
+
+  // if (status === "unauthenticated") {
+  //   // toast({
+  //   //   title: "Unauthenticated!",
+  //   //   description: "Sorry, please login to access page.",
+  //   //   status: "warning",
+  //   //   position: "top",
+  //   //   isClosable: true,
+  //   // });
+  //   router.push("/login");
+  //   return;
+  // }
 
   return (
     <>
@@ -50,7 +81,7 @@ const Cart = () => {
                 <Text fontSize="2xl" fontWeight="bold">
                   Cart
                 </Text>
-                {cartItems.map((item, i) => (
+                {cartItems?.map((item, i) => (
                   <CartItem key={i} data={item} />
                 ))}
               </Box>
@@ -159,7 +190,20 @@ const Cart = () => {
                     transition="transform .3s ease-out"
                     _active={{ transform: "scale(0.95)" }}
                     mb={3}
-                    onClick={() => router.push("login?redirect=/shipping")}
+                    onClick={() => {
+                      if (isLoggedIn) {
+                        router.push("/shipping");
+                      } else {
+                        toast({
+                          title: "Alert!",
+                          description: "Sorry, please login to checkout!.",
+                          status: "warning",
+                          position: "top",
+                          isClosable: true,
+                        });
+                        router.push("/login");
+                      }
+                    }}
                   >
                     Checkout
                   </Button>
@@ -302,4 +346,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default dynamic(() => Promise.resolve(Cart), { ssr: false });

@@ -4,6 +4,7 @@ import Hero from "@/components/Slider/Hero";
 import { Box, Button, Heading, SimpleGrid, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import { fetchDataFromAPI } from "../modules/fetch";
+import Link from "next/link";
 
 export default function Home({ products }) {
   return (
@@ -48,16 +49,18 @@ export default function Home({ products }) {
               Meet the latest update to the shoe that's been trusted by runners
               of all kinds for four decades.
             </Text>
-            <Button
-              color="white"
-              bg="black"
-              colorScheme="blackAlpha"
-              rounded={50}
-              size="md"
-              fontWeight="normal"
-            >
-              Shop
-            </Button>
+            <Link href="/products">
+              <Button
+                color="white"
+                bg="black"
+                colorScheme="blackAlpha"
+                rounded={50}
+                size="md"
+                fontWeight="normal"
+              >
+                Shop
+              </Button>
+            </Link>
           </Box>
           <SimpleGrid minChildWidth={400} gap={5} my={14}>
             {products?.map((product) => (

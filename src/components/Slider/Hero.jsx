@@ -3,6 +3,7 @@ import { Carousel } from "react-responsive-carousel";
 import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import { VscArrowLeft, VscArrowRight } from "react-icons/vsc";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -68,22 +69,24 @@ const Hero = () => {
             alt="slider image"
             style={{ objectFit: "cover", aspectRatio: "auto" }}
           />
-          <Box
-            px={{ base: "25px", md: "40px" }}
-            py={{ base: "10px", md: "15px" }}
-            bg="white"
-            position="absolute"
-            bottom={{ base: "25px", md: "75px" }}
-            left={0}
-            color="blackAlpha.900"
-            fontSize={{ base: "15px", md: "30px" }}
-            textTransform="uppercase"
-            fontWeight="light"
-            cursor="pointer"
-            _hover={{ opacity: 90 }}
-          >
-            Shop Now
-          </Box>
+          <Link href="/products">
+            <Box
+              px={{ base: "25px", md: "40px" }}
+              py={{ base: "10px", md: "15px" }}
+              bg="white"
+              position="absolute"
+              bottom={{ base: "25px", md: "75px" }}
+              left={0}
+              color="blackAlpha.900"
+              fontSize={{ base: "15px", md: "30px" }}
+              textTransform="uppercase"
+              fontWeight="light"
+              cursor="pointer"
+              _hover={{ opacity: 90 }}
+            >
+              Shop Now
+            </Box>
+          </Link>
         </Box>
         <Box>
           <Image
@@ -93,22 +96,24 @@ const Hero = () => {
             alt="slider image"
             style={{ objectFit: "cover", aspectRatio: "auto" }}
           />
-          <Box
-            px={{ base: "25px", md: "40px" }}
-            py={{ base: "10px", md: "15px" }}
-            bg="white"
-            position="absolute"
-            bottom={{ base: "25px", md: "75px" }}
-            left={0}
-            color="blackAlpha.900"
-            fontSize={{ base: "15px", md: "30px" }}
-            textTransform="uppercase"
-            fontWeight="light"
-            cursor="pointer"
-            _hover={{ opacity: 90 }}
-          >
-            Shop Now
-          </Box>
+          <Link href="/products">
+            <Box
+              px={{ base: "25px", md: "40px" }}
+              py={{ base: "10px", md: "15px" }}
+              bg="white"
+              position="absolute"
+              bottom={{ base: "25px", md: "75px" }}
+              left={0}
+              color="blackAlpha.900"
+              fontSize={{ base: "15px", md: "30px" }}
+              textTransform="uppercase"
+              fontWeight="light"
+              cursor="pointer"
+              _hover={{ opacity: 90 }}
+            >
+              Shop Now
+            </Box>
+          </Link>
         </Box>
         <Box>
           <Image
@@ -118,22 +123,24 @@ const Hero = () => {
             alt="slider image"
             style={{ objectFit: "cover", aspectRatio: "auto" }}
           />
-          <Box
-            px={{ base: "25px", md: "40px" }}
-            py={{ base: "10px", md: "15px" }}
-            bg="white"
-            position="absolute"
-            bottom={{ base: "25px", md: "75px" }}
-            left={0}
-            color="blackAlpha.900"
-            fontSize={{ base: "15px", md: "30px" }}
-            textTransform="uppercase"
-            fontWeight="light"
-            cursor="pointer"
-            _hover={{ opacity: 90 }}
-          >
-            Shop Now
-          </Box>
+          <Link href="/products">
+            <Box
+              px={{ base: "25px", md: "40px" }}
+              py={{ base: "10px", md: "15px" }}
+              bg="white"
+              position="absolute"
+              bottom={{ base: "25px", md: "75px" }}
+              left={0}
+              color="blackAlpha.900"
+              fontSize={{ base: "15px", md: "30px" }}
+              textTransform="uppercase"
+              fontWeight="light"
+              cursor="pointer"
+              _hover={{ opacity: 90 }}
+            >
+              Shop Now
+            </Box>
+          </Link>
         </Box>
         <Box>
           <Image
@@ -143,22 +150,24 @@ const Hero = () => {
             alt="slider image"
             style={{ objectFit: "cover", aspectRatio: "auto" }}
           />
-          <Box
-            px={{ base: "25px", md: "40px" }}
-            py={{ base: "10px", md: "15px" }}
-            bg="white"
-            position="absolute"
-            bottom={{ base: "25px", md: "75px" }}
-            left={0}
-            color="blackAlpha.900"
-            fontSize={{ base: "15px", md: "30px" }}
-            textTransform="uppercase"
-            fontWeight="light"
-            cursor="pointer"
-            _hover={{ opacity: 90 }}
-          >
-            Shop Now
-          </Box>
+          <Link href="/products">
+            <Box
+              px={{ base: "25px", md: "40px" }}
+              py={{ base: "10px", md: "15px" }}
+              bg="white"
+              position="absolute"
+              bottom={{ base: "25px", md: "75px" }}
+              left={0}
+              color="blackAlpha.900"
+              fontSize={{ base: "15px", md: "30px" }}
+              textTransform="uppercase"
+              fontWeight="light"
+              cursor="pointer"
+              _hover={{ opacity: 90 }}
+            >
+              Shop Now
+            </Box>
+          </Link>
         </Box>
         <Box>
           <Image
@@ -168,22 +177,24 @@ const Hero = () => {
             alt="slider image"
             style={{ objectFit: "cover", aspectRatio: "auto" }}
           />
-          <Box
-            px={{ base: "25px", md: "40px" }}
-            py={{ base: "10px", md: "15px" }}
-            bg="white"
-            position="absolute"
-            bottom={{ base: "25px", md: "75px" }}
-            left={0}
-            color="blackAlpha.900"
-            fontSize={{ base: "15px", md: "30px" }}
-            textTransform="uppercase"
-            fontWeight="light"
-            cursor="pointer"
-            _hover={{ opacity: 90 }}
-          >
-            Shop Now
-          </Box>
+          <Link href="/products">
+            <Box
+              px={{ base: "25px", md: "40px" }}
+              py={{ base: "10px", md: "15px" }}
+              bg="white"
+              position="absolute"
+              bottom={{ base: "25px", md: "75px" }}
+              left={0}
+              color="blackAlpha.900"
+              fontSize={{ base: "15px", md: "30px" }}
+              textTransform="uppercase"
+              fontWeight="light"
+              cursor="pointer"
+              _hover={{ opacity: 90 }}
+            >
+              Shop Now
+            </Box>
+          </Link>
         </Box>
       </Carousel>
     </Box>

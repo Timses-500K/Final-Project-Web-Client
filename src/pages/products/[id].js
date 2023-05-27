@@ -13,17 +13,23 @@ import {
 } from "@chakra-ui/react";
 import React, { useContext, useState } from "react";
 import { BsHeart } from "react-icons/bs";
-import { fetchDataFromAPI } from "../../modules/fetch";
+import { checkStock, fetchDataFromAPI } from "../../modules/fetch";
 // import { useDispatch } from "react-redux";
 // import { addToCart } from "@/store/cartSlice";
 import { Store } from "@/helper/store";
+import { convertToRupiah } from "@/helper/custom";
+import { useAuth } from "@/modules/context/authCotext";
+import { useRouter } from "next/router";
 
 const ProductDetails = ({ product, products }) => {
   // const dispatch = useDispatch();
+  const router = useRouter();
   const [selectedSize, setSelectedSize] = useState();
+  const [stock, setStock] = useState(0);
   const [showErrorSize, setShowErrorSize] = useState(false);
   const toast = useToast();
   const { state, dispatch } = useContext(Store);
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   return (
     <Box w="full" py={{ md: 10 }}>
       <Wrapper>
@@ -45,10 +51,10 @@ const ProductDetails = ({ product, products }) => {
               {product.itemName}
             </Text>
             <Text fontSize="lg" mb={5}>
-              {product.itemName}
+              {product.itemCategory?.[0].categoryName}
             </Text>
             <Text fontSize="lg" fontWeight="semibold">
-              Rp. {product.price}
+              {convertToRupiah(product.price)}
             </Text>
             <Text fontSize="sm" fontWeight="medium" color="blackAlpha.500">
               Include of taxes
@@ -72,7 +78,7 @@ const ProductDetails = ({ product, products }) => {
                   color="blackAlpha.500"
                   cursor="pointer"
                 >
-                  Select Guide
+                  Stock: {stock}
                 </Text>
               </Flex>
               <SimpleGrid columns={3} spacing={5} id="simpleSizeGrid" pb={5}>
@@ -89,8 +95,9 @@ const ProductDetails = ({ product, products }) => {
                     fontSize={"medium"}
                     _hover={{ borderColor: "black" }}
                     cursor="pointer"
-                    onClick={() => {
+                    onClick={async () => {
                       setSelectedSize(size.size);
+                      setStock(await checkStock(product.id, size.size));
                       setShowErrorSize(false);
                     }}
                   >
@@ -114,6 +121,18 @@ const ProductDetails = ({ product, products }) => {
                 _active={{ transform: "scale(0.95)" }}
                 mb={3}
                 onClick={() => {
+                  if (!isLoggedIn) {
+                    toast({
+                      title: "Alert!",
+                      description:
+                        "Sorry, please login to add an item to cart!.",
+                      status: "warning",
+                      position: "top",
+                      isClosable: true,
+                    });
+                    router.push("/login");
+                    return;
+                  }
                   if (!selectedSize) {
                     setShowErrorSize(true);
                     document.getElementById("simpleSizeGrid").scrollIntoView({
@@ -126,11 +145,25 @@ const ProductDetails = ({ product, products }) => {
                         item.id === product.id &&
                         item.selectedSize === selectedSize
                     );
+
                     const quantity = existItem ? existItem.quantity + 1 : 1;
-                    if (product.stock < quantity) {
+                    if (stock < quantity) {
                       toast({
-                        title: "Sorry, we are out of stock",
-                        status: "error",
+                        title: "Attention!",
+                        description:
+                          "Sorry, you have reached the stock available. Please check your items in cart and try again.",
+                        status: "warning",
+                        position: "top",
+                        isClosable: true,
+                      });
+                      return;
+                    }
+                    if (quantity > 10) {
+                      toast({
+                        title: "Attention!",
+                        description:
+                          "Sorry, you have reached the quantity limit. Please remove an item and try again.",
+                        status: "warning",
                         position: "top",
                         isClosable: true,
                       });
@@ -141,7 +174,9 @@ const ProductDetails = ({ product, products }) => {
                       payload: { ...product, selectedSize, quantity },
                     });
                     toast({
-                      title: "Yeay, your shoes was added.",
+                      title: "Success.",
+                      description:
+                        "Yeay, your dream shoes has been successfully added to the cart.",
                       status: "success",
                       position: "top",
                       isClosable: true,

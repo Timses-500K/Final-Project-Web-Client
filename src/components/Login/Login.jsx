@@ -23,19 +23,17 @@ import { signIn, useSession } from "next-auth/react";
 import { getError } from "@/helper/error";
 import { useRouter } from "next/router";
 import { VscEye, VscEyeClosed } from "react-icons/vsc";
+import Cookies from "js-cookie";
+import { loginUser } from "@/modules/fetch";
+import { useAuth } from "@/modules/context/authCotext";
 
 const LoginForm = () => {
   const router = useRouter();
   const { redirect } = router.query;
   const toast = useToast;
   const [show, setShow] = useState(false);
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    if (session?.user) {
-      router.push(redirect || "/");
-    }
-  }, [router, session, redirect]);
+  const { isLoggedin, setIsLoggedIn } = useAuth();
+  // const { data: session } = useSession();
 
   const {
     register,
@@ -44,11 +42,18 @@ const LoginForm = () => {
   } = useForm();
   const submitHandler = async ({ email, password }) => {
     try {
-      const res = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
-      });
+      const res = await loginUser(email, password);
+      if (res) {
+        localStorage.setItem("accessToken", res.token);
+        Cookies.set("isLoggedIn", true);
+        setIsLoggedIn(true);
+        router.push(redirect || "/");
+      }
+      // const res = await signIn("credentials", {
+      //   redirect: false,
+      //   email,
+      //   password,
+      // });
       if (res.error) {
         toast({
           title: res.error,
@@ -58,12 +63,13 @@ const LoginForm = () => {
         });
       }
     } catch (error) {
-      toast({
-        title: getError(error),
-        status: "error",
-        position: "top",
-        isClosable: true,
-      });
+      console.log(error);
+      // toast({
+      //   title: getError(error),
+      //   status: "error",
+      //   position: "top",
+      //   isClosable: true,
+      // });
     }
   };
   const [keepSignedIn, setKeepSignedIn] = useState(false);

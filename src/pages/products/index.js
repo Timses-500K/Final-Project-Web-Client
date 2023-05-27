@@ -5,14 +5,42 @@ import {
   Box,
   Center,
   Flex,
+  FormControl,
+  FormLabel,
   Grid,
   GridItem,
+  Select,
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
-const Products = ({ products }) => {
+const Products = ({ products, categories }) => {
+  const router = useRouter();
+  const { category = "all" } = router.query;
+  const filterSearch = ({ category }) => {
+    const { query } = router;
+    if (category) {
+      query.category = category;
+    }
+
+    router.push({
+      pathname: router.pathname,
+      query: query,
+    });
+  };
+
+  const categoryHandler = (e) => {
+    filterSearch({ category: e.target.value });
+  };
+
+  const filteredProducts = category
+    ? products?.filter(
+        (product) => product.itemCategory?.[0]?.categoryName === category
+      )
+    : products;
+
   return (
     <>
       <Head>
@@ -29,19 +57,29 @@ const Products = ({ products }) => {
               fontWeight="semibold"
               lineHeight={1.5}
             >
-              All Shoes
+              {category || "All"} Shoes
             </Text>
           </Center>
-          <Flex
-            flexDirection={{ base: "column", lg: "row" }}
-            gap={5}
-            py={10}
-            justify="space-around"
-          >
-            <Box flex={1}></Box>
+          <Flex flexDirection={{ base: "column", lg: "row" }} gap={5} py={10}>
+            <Box flex={1}>
+              <FormControl>
+                <FormLabel>Category</FormLabel>
+                <Select
+                  placeholder="Select category"
+                  onChange={categoryHandler}
+                >
+                  <option value="all">All Categories</option>
+                  {categories?.map((category) => {
+                    return (
+                      <option key={category.id}>{category.categoryName}</option>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Box>
             <Box flex={6}>
               <SimpleGrid minChildWidth={300} gap={4}>
-                {products?.map((product) => (
+                {filteredProducts?.map((product) => (
                   <ProductCard key={product.id} data={product} />
                 ))}
               </SimpleGrid>
@@ -62,9 +100,11 @@ export default Products;
 
 export async function getStaticProps() {
   const products = await fetchDataFromAPI("/product");
+  const categories = await fetchDataFromAPI("/dashboard/category");
   return {
     props: {
       products,
+      categories,
     },
   };
 }

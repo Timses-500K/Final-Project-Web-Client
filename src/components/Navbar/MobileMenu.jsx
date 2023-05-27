@@ -6,16 +6,9 @@ import { BsChevronDown } from "react-icons/bs";
 
 const mainMenu = [
   { id: 1, name: "Home", url: "/" },
-  { id: 2, name: "About", url: "/about" },
-  { id: 3, name: "Categories", subMenuStatus: true },
+  { id: 2, name: "Products", url: "/Products" },
+  // { id: 3, name: "Categories", subMenuStatus: true },
   { id: 4, name: "Contact", url: "/contact" },
-];
-
-const subMenu = [
-  { id: 1, name: "Jordan", doc_count: 11, url: "/products/jordan" },
-  { id: 2, name: "Sneakers", doc_count: 8, url: "/products/sneakers" },
-  { id: 3, name: "Running", doc_count: 40, url: "/products/running" },
-  { id: 4, name: "Football", doc_count: 90, url: "/products/football" },
 ];
 
 const MobileMenu = ({ showSubMenu, setShowSubMenu, setMobileMenu }) => {
@@ -59,7 +52,7 @@ const MobileMenu = ({ showSubMenu, setShowSubMenu, setMobileMenu }) => {
                       {menu.name}
                       <BsChevronDown />
                     </Flex>
-                    {showSubMenu && (
+                    {/* {showSubMenu && (
                       <Box bg="blackAlpha.50" mx={-5} mt={4} mb={-4}>
                         {nav?.categories?.map((category) => {
                           return (
@@ -86,7 +79,7 @@ const MobileMenu = ({ showSubMenu, setShowSubMenu, setMobileMenu }) => {
                           );
                         })}
                       </Box>
-                    )}
+                    )} */}
                   </Flex>
                 ) : (
                   <Box

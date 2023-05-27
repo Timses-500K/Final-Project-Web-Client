@@ -1,16 +1,26 @@
-import { Box, Center, Flex, Hide, Show } from "@chakra-ui/react";
+import {
+  Box,
+  Center,
+  Flex,
+  Hide,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Show,
+} from "@chakra-ui/react";
 import Link from "next/link";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BsCart, BsChevronDown, BsHeart } from "react-icons/bs";
 import { BiMenuAltRight } from "react-icons/bi";
 import { VscChromeClose } from "react-icons/vsc";
 // import { useSelector } from "react-redux";
 import { Store } from "@/helper/store";
+import { Search2Icon, SearchIcon } from "@chakra-ui/icons";
 
 const mainMenu = [
   { id: 1, name: "Home", url: "/" },
   { id: 2, name: "Products", url: "/products" },
-  { id: 3, name: "Categories", subMenuStatus: true },
+  // { id: 3, name: "Categories", subMenuStatus: true },
   { id: 4, name: "Contact Us", url: "/contact" },
 ];
 
@@ -22,7 +32,17 @@ const MainMenu = ({
 }) => {
   // const { cartItems } = useSelector((state) => state.cart);
   const { dispatch, state } = useContext(Store);
-  const { cart, nav } = state;
+  const [cartItemsCount, setCartItemsCount] = useState(0);
+  const { cart } = state;
+
+  useEffect(() => {
+    setCartItemsCount(
+      cart.cartItems.reduce(
+        (accumulator, current) => accumulator + current.quantity,
+        0
+      )
+    );
+  }, [cart.cartItems]);
 
   return (
     <>
@@ -30,7 +50,7 @@ const MainMenu = ({
         display={{ base: "none", md: "flex" }}
         alignItems="center"
         width="auto"
-        gap={8}
+        gap={20}
       >
         {mainMenu.map((menu) => {
           return (
@@ -56,7 +76,7 @@ const MainMenu = ({
                   >
                     {menu.name}
                     <BsChevronDown />
-                    {showSubMenu && (
+                    {/* {showSubMenu && (
                       <Box
                         bg="white"
                         position="absolute"
@@ -70,7 +90,7 @@ const MainMenu = ({
                           return (
                             <Link
                               key={category.id}
-                              href={`/category/${category.categoryName}`}
+                              href={`/category/${category.id}`}
                             >
                               <Flex
                                 h={12}
@@ -89,7 +109,7 @@ const MainMenu = ({
                           );
                         })}
                       </Box>
-                    )}
+                    )} */}
                   </Flex>
                 </Box>
               ) : (
@@ -112,6 +132,12 @@ const MainMenu = ({
         })}
       </Box>
       <Flex alignItems="center" justify="center" gap={2}>
+        <InputGroup width={200}>
+          <InputLeftElement pointerEvents="none">
+            <Search2Icon />
+          </InputLeftElement>
+          <Input type="text" placeholder="Search" rounded="full" />
+        </InputGroup>
         <Center
           w={{ base: 8, md: 12 }}
           h={{ base: 8, md: 12 }}
@@ -148,7 +174,7 @@ const MainMenu = ({
             _hover={{ bg: "gray.100" }}
           >
             <BsCart />
-            {cart.cartItems.length > 0 && (
+            {cartItemsCount > 0 && (
               <Box
                 h={{ base: "14px", md: "18px" }}
                 w={{ base: "14px", md: "18px" }}
@@ -162,10 +188,11 @@ const MainMenu = ({
                 px={{ base: "2px", md: "5px" }}
               >
                 <Center>
-                  {cart.cartItems.reduce(
+                  {cartItemsCount}
+                  {/* {cart.cartItems.reduce(
                     (accumulator, current) => accumulator + current.quantity,
                     0
-                  )}
+                  )} */}
                 </Center>
               </Box>
             )}
