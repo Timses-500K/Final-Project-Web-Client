@@ -245,9 +245,9 @@ const Confirmation = () => {
                           i
                         ].itemSize.find(
                           (size) =>
-                            size.ItemSize.size ===
-                            state.cart.cartItems.selectedSize
+                            size.size === state.cart.cartItems[i].selectedSize
                         );
+                        console.log(filteredSize, "<<<<<filtered");
                         console.log(filteredSize.id, "<<<<<itemsize");
                         await addToCart(
                           selectedAddress,
