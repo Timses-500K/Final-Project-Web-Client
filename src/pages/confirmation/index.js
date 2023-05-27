@@ -28,6 +28,7 @@ import React, { useContext, useEffect, useState } from "react";
 import OrderItem from "@/components/Order/OrderItem";
 import { getUser } from "@/modules/fetch";
 import { instance } from "@/modules/axios";
+import Loading from "@/components/Loading/Loading";
 // import { instance } from "@/modules/axios";
 // import axios from "axios";
 // import Cookies from "js-cookie";
@@ -43,6 +44,24 @@ const Confirmation = () => {
   const router = useRouter();
   const toast = useToast();
   const { state, dispatch } = useContext(Store);
+  const [user, setUser] = useState({});
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  if (isLoading) {
+    return <>Loading...</>;
+  }
+
+  const fetchUser = async () => {
+    const data = await getUser();
+    setUser(data);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetchUser();
+  }, []);
   // const {
   //   cart: { cartItems },
   // } = state;
@@ -58,8 +77,6 @@ const Confirmation = () => {
   //   };
   //   setLoogedUser(user);
   // });
-
-  // console.log(loggedUser, "<<<<<Logged");
 
   return (
     <>
@@ -84,6 +101,7 @@ const Confirmation = () => {
             <Box flex={2}>
               <Text fontSize="2xl" fontWeight="bold" pb={10}>
                 Contact Information
+                {JSON.stringify(user)}
               </Text>
               <Box>
                 <FormControl>
