@@ -22,9 +22,8 @@ import { useAuth } from "@/modules/context/authCotext";
 import { useRouter } from "next/router";
 import cart from "../cart";
 
-const ProductDetails = ({ product, products }) => {
+const ProductDetails = ({ product, products, related }) => {
   // const dispatch = useDispatch();
-  console.log(product, "<<<<<product");
   const router = useRouter();
   const [selectedSize, setSelectedSize] = useState();
   const [stock, setStock] = useState(0);
@@ -172,7 +171,6 @@ const ProductDetails = ({ product, products }) => {
                       });
                       return;
                     }
-                    console.log(state.cart.cartItems, "<<<<<cart");
                     dispatch({
                       type: "ADD_ITEM",
                       payload: { ...product, selectedSize, quantity },
@@ -233,7 +231,7 @@ const ProductDetails = ({ product, products }) => {
             </Box>
           </Box>
         </Flex>
-        <RelatedProducts products={products} />
+        <RelatedProducts related={related} />
       </Wrapper>
     </Box>
   );
@@ -262,6 +260,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       product: product.productDetails,
+      related: product.relatedItems,
       products,
       // sizes,
     },

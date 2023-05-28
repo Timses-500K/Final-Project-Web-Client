@@ -205,14 +205,6 @@ const Cart = () => {
                     transition="transform .3s ease-out"
                     _active={{ transform: "scale(0.95)" }}
                     mb={3}
-                    // onClick={async () => {
-                    //   setUser(await getUser());
-                    //   console.log(user, "<<<<getUserXart");
-                    // }}
-                    // setUser(await getUser());
-                    // for(i=0;i<cartItems.length;i++){
-                    //   await addToCart(cartItems[i].id, cartItems[i].itemSize.id, quantity);
-                    // }
                     onClick={async () => {
                       if (isLoggedIn) {
                         router.push("/confirmation");

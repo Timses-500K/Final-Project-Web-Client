@@ -63,7 +63,6 @@ const LoginForm = () => {
         });
       }
     } catch (error) {
-      console.log(error);
       // toast({
       //   title: getError(error),
       //   status: "error",

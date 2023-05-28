@@ -70,7 +70,6 @@ const Confirmation = () => {
   }
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     setSelectedAddress(e.target.value);
   };
 
@@ -240,15 +239,12 @@ const Confirmation = () => {
                   onClick={async () => {
                     if (isLoggedIn) {
                       for (let i = 0; i < state.cart.cartItems.length; i++) {
-                        console.log(state.cart.cartItems[i], "<<<<cartItems");
                         const filteredSize = state.cart.cartItems[
                           i
                         ].itemSize.find(
                           (size) =>
                             size.size === state.cart.cartItems[i].selectedSize
                         );
-                        console.log(filteredSize, "<<<<<filtered");
-                        console.log(filteredSize.id, "<<<<<itemsize");
                         await addToCart(
                           selectedAddress,
                           state.cart.cartItems[i].id,
@@ -258,6 +254,7 @@ const Confirmation = () => {
                       }
                       await createOrder();
                       router.push("/success");
+                      dispatch({ type: "CART_RESET" });
                     } else {
                       toast({
                         title: "Alert!",

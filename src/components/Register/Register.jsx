@@ -78,16 +78,6 @@ const RegisterForm = () => {
       setConfirmPassword("");
       setBirthdate("");
     }
-
-    console.log({
-      firstName,
-      lastName,
-      email,
-      password,
-      confirmPassword,
-      birthdate,
-    });
-
     // Clear form fields
     // setFirstName('')
     // setLastName('')

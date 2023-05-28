@@ -5,9 +5,9 @@ import { CldImage } from "next-cloudinary";
 import Image from "next/image";
 import Link from "next/link";
 
-const ProductCard = ({ data: product }) => {
+const ProductCard = ({ data: product, productId }) => {
   return (
-    <Link href={`/products/${product.id}`}>
+    <Link href={`/products/${productId ? productId : product.id}`}>
       <Box
         as={motion.div}
         overflow="hidden"
